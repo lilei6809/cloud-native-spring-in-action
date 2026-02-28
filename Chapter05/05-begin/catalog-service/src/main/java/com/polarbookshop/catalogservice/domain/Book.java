@@ -35,7 +35,7 @@ public record Book (
         Double price,
 
         @CreatedDate
-        Instant createDate,
+        Instant createdDate,
 
         @LastModifiedDate
         Instant lastModifiedDate,
@@ -45,6 +45,13 @@ public record Book (
 
 ){
         public static Book of (String isbn, String title, String author, Double price){
-                return new Book(null, isbn, title, author, price, null, null, 0);
+                return new Book(null, isbn, title, author, price, null, null, null);
+                //  Spring Data JDBC 判断实体是否是新对象的逻辑：
+                //  - @Version == null → 新对象（isNew() = true）→ 触发 @CreatedDate
+                //  - @Version != null（包括 0）→ 已有对象（isNew() = false）→ 不设置 @CreatedDate
+                //
+                //  version = 0 是 Integer 类型，不为 null，所以 isNew() = false，auditing 不设置 createdDate，INSERT 时 created_date = null 违反 NOT NULL 约束。
+                //
+                //  修复： 将 version = 0 改为 null：
         }
 }
