@@ -28,6 +28,7 @@ public class BookController {
 
     @GetMapping
     public Iterable<Book> get() {
+        int i = 0;
         return bookService.viewBookList();
     }
 
