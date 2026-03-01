@@ -1,7 +1,7 @@
 services:
-  postgres:
+  polar-postgres:
     image: postgres:16.2
-    container_name: postgres-native
+    container_name: polar-postgres
     networks:
       - catalog-network
     environment:
@@ -24,8 +24,13 @@ services:
   catalog-service:
     image: catalog-service
     container_name: catalog-service
+    depends_on:
+      - polar-postgres
     environment:
-      SPRING_PROFILES_ACTIVE: testdata
+      SPRING_PROFILES_ACTIVE: testdata #
+      SPRING_DATASOURCE_URL: jdbc:postgresql://polar-postgres:5432/polardb_catalog
+#      这个地方在 container 启动时注入环境变量, 可以 cover 掉 application.yaml 中的配置.
+    #  所以 application.yaml 本地开发环境仍然可以使用 localhost
     networks:
       - catalog-network
     ports:
