@@ -22,7 +22,7 @@ services:
 
 
   catalog-service:
-    image: catalog-service
+    image: ghcr.io/lilei6809/catalog-service:0.0.1-SNAPSHOT
     container_name: catalog-service
     depends_on:
       - polar-postgres
@@ -35,6 +35,14 @@ services:
       - catalog-network
     ports:
       - "9001:9001"
+
+  config-service:
+    image: ghcr.io/lilei6809/config-service:0.0.1-SNAPSHOT
+    container_name: config-service
+    networks:
+      - catalog-network
+    ports:
+      - "8888:8888"
 
 
 networks:

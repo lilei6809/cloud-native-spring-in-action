@@ -28,6 +28,11 @@ jib {
             }
         }
     }
+
+    container{
+        user = '1000:1000'
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+    }
 }
 
 repositories {

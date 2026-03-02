@@ -1,9 +1,6 @@
 name: Commit Stage
 on:
-  push:
-    paths:
-      - 'Chapter06/**'
-      - '.github/workflows/commit-stage.yml'
+  workflow_dispatch:
   schedule: # Every Monday
     - cron: '0 0 * * 1'
 

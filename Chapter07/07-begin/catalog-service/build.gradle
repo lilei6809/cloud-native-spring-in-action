@@ -10,7 +10,7 @@ sourceCompatibility = '17'
 
 description = 'Provides functionality for managing the books in the catalog.'
 
-configurations {
+configurations {k
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
