@@ -1,7 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '3.3.0'
-    id 'io.spring.dependency-management' version '1.1.5'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.6'
     id 'java'
+    id 'com.google.cloud.tools.jib' version '3.4.3'
 }
 
 group = 'com.polarbookshop'
@@ -9,6 +10,25 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 description = 'Provides functionality for centralizing the application configuration.'
+
+def gchrOwner = project.findProperty("gchrOwner") ?: System.getenv("GH_USERNAME")
+def gchrUsername = project.findProperty("gchrUsername") ?: System.getenv("GH_USERNAME")
+def gchrToken = project.findProperty("gchrToken") ?: System.getenv("GHCR_TOKEN");
+
+jib {
+    from {
+        image = 'eclipse-temurin:17-jre'
+    }
+    to {
+        image = project.findProperty("imageName") ?: "ghcr.io/${ghcrOwner}/${project.name}:${project.version}"
+        if (ghcrUsername && ghcrToken) {
+            auth {
+                username = ghcrUsername
+                password = ghcrToken
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()
