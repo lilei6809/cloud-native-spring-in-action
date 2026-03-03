@@ -19,7 +19,7 @@ def debugEnabled = (project.findProperty("debug") ?: "false").toString().toBoole
 // bootBuildImage 配置使用 Backpack build image
 bootBuildImage {
 
-	builder = "docker.io/paketobuildpacks/builder-jammy-base:0.4.542"
+	builder = "docker.io/paketobuildpacks/builder-jammy-base:latest"
 //	runImage = "docker.io/paketobuildpacks/run-jammy-base:0.1.202"
 	imageName = "${project.name}"
 	environment = ["BP_JVM_VERSION" : "17.*"]  // jvm version

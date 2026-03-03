@@ -9,15 +9,17 @@ server:
   shutdown: graceful
 
 spring:
+  devtools:
+    restart:
+      trigger-file: .reloadtrigger
   application:
     name: catalog-service
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:
-    import: "optional:configserver:"
+    import: optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}
   cloud:
     config:
-      uri: http://localhost:8888
       request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
       fail-fast: false # In production, set to true

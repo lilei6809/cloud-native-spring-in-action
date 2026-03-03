@@ -29,5 +29,8 @@ spec:
               value: jdbc:postgresql://polar-postgres/polardb_catalog
             - name: SPRING_PROFILES_ACTIVE
               value: testdata
+            - name: CONFIG_SERVER_URI
+              value: http://config-service:8888
+
 
 
