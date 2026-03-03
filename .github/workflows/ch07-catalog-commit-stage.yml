@@ -52,6 +52,7 @@ jobs:
           echo "$HOME/.arkade/bin" >> $GITHUB_PATH
       - name: Validate Kubernetes manifests
         run: |
+          cd Chapter07/07-begin/catalog-service
           find k8s -type f \( -name "*.yml" -o -name "*.yaml" \) -print0 \
             | xargs -0 -r kubeconform -strict -summary -ignore-missing-schemas
   package:
