@@ -96,13 +96,15 @@ jobs:
         run: |
           set -euo pipefail
 
-          # GHCR can occasionally time out when requesting an auth token.
+          # GHCR /v2/ without credentials commonly returns 401, which still
+          # means the registry endpoint is reachable.
           for i in {1..5}; do
-            if curl -fsS --max-time 15 "https://${{ env.REGISTRY }}/v2/" >/dev/null; then
-              echo "Registry reachable"
+            http_code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "https://${{ env.REGISTRY }}/v2/" || true)"
+            if [ "$http_code" = "200" ] || [ "$http_code" = "401" ]; then
+              echo "Registry reachable (HTTP ${http_code})"
               break
             fi
-            echo "Registry probe failed (attempt ${i}/5), retrying..."
+            echo "Registry probe failed with HTTP ${http_code:-n/a} (attempt ${i}/5), retrying..."
             sleep $((i * 4))
           done
 
