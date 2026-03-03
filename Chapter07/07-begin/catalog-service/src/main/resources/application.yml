@@ -6,10 +6,13 @@ server:
     threads:
       max: 50
       min-spare: 5
+  shutdown: graceful
 
 spring:
   application:
     name: catalog-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
   config:
     import: "optional:configserver:"
   cloud:
