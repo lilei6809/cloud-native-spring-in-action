@@ -1,0 +1,934 @@
+
+==> Audit <==
+┌────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────┬────────┬─────────┬─────────────────────┬─────────────────────┐
+│    COMMAND     │                                                                                                                     ARGS                                                                                                                      │ PROFILE  │  USER  │ VERSION │     START TIME      │      END TIME       │
+├────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────┼────────┼─────────┼─────────────────────┼─────────────────────┤
+│ start          │                                                                                                                                                                                                                                               │ minikube │ leland │ v1.38.1 │ 26 Feb 26 13:53 CST │                     │
+│ stop           │                                                                                                                                                                                                                                               │ minikube │ leland │ v1.38.1 │ 02 Mar 26 16:12 CST │ 02 Mar 26 16:12 CST │
+│ start          │ --cpus 2 --memory 4g --driver docker --profile polar                                                                                                                                                                                          │ polar    │ leland │ v1.38.1 │ 02 Mar 26 16:21 CST │ 02 Mar 26 16:22 CST │
+│ node           │ add -p polar                                                                                                                                                                                                                                  │ polar    │ leland │ v1.38.1 │ 02 Mar 26 16:26 CST │ 02 Mar 26 16:27 CST │
+│ stop           │                                                                                                                                                                                                                                               │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:01 CST │ 02 Mar 26 17:01 CST │
+│ start          │ --profile=polar                                                                                                                                                                                                                               │ polar    │ leland │ v1.38.1 │ 02 Mar 26 17:01 CST │ 02 Mar 26 17:03 CST │
+│ image          │ ls                                                                                                                                                                                                                                            │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:50 CST │ 02 Mar 26 17:50 CST │
+│ image          │ load catalog-service --profile polar                                                                                                                                                                                                          │ polar    │ leland │ v1.38.1 │ 02 Mar 26 17:50 CST │ 02 Mar 26 17:50 CST │
+│ image          │ ls                                                                                                                                                                                                                                            │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:51 CST │ 02 Mar 26 17:51 CST │
+│ config         │ set-context polar                                                                                                                                                                                                                             │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:52 CST │ 02 Mar 26 17:52 CST │
+│ config         │ get-contexts                                                                                                                                                                                                                                  │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:53 CST │ 02 Mar 26 17:53 CST │
+│ config         │ get-context                                                                                                                                                                                                                                   │ minikube │ leland │ v1.38.1 │ 02 Mar 26 17:53 CST │ 02 Mar 26 17:53 CST │
+│ image          │ load catalog-service --profile polar                                                                                                                                                                                                          │ polar    │ leland │ v1.38.1 │ 02 Mar 26 18:39 CST │ 02 Mar 26 18:39 CST │
+│ image          │ ls                                                                                                                                                                                                                                            │ minikube │ leland │ v1.38.1 │ 02 Mar 26 18:39 CST │ 02 Mar 26 18:39 CST │
+│ ssh            │ -p polar -- sudo crictl images                                                                                                                                                                                                                │ polar    │ leland │ v1.38.1 │ 02 Mar 26 18:40 CST │                     │
+│ config         │ view -p polar                                                                                                                                                                                                                                 │ polar    │ leland │ v1.38.1 │ 02 Mar 26 18:40 CST │ 02 Mar 26 18:40 CST │
+│ stop           │                                                                                                                                                                                                                                               │ minikube │ leland │ v1.38.1 │ 02 Mar 26 18:54 CST │                     │
+│ start          │ --profile=polar                                                                                                                                                                                                                               │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:08 CST │                     │
+│ start          │ --profile=polar                                                                                                                                                                                                                               │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:10 CST │                     │
+│ config         │ set driver docker                                                                                                                                                                                                                             │ minikube │ leland │ v1.38.1 │ 03 Mar 26 14:33 CST │ 03 Mar 26 14:33 CST │
+│ start          │ --cpus=2 --memory=4g                                                                                                                                                                                                                          │ minikube │ leland │ v1.38.1 │ 03 Mar 26 14:33 CST │ 03 Mar 26 14:34 CST │
+│ stop           │                                                                                                                                                                                                                                               │ minikube │ leland │ v1.38.1 │ 03 Mar 26 14:34 CST │ 03 Mar 26 14:35 CST │
+│ start          │ --cpus 2 --memory 4g --driver docker --profile polar                                                                                                                                                                                          │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:35 CST │                     │
+│ stop           │ -p polar                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:39 CST │                     │
+│ delete         │ -p polar --all                                                                                                                                                                                                                                │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:39 CST │ 03 Mar 26 14:39 CST │
+│ start          │ -p polar --driver=docker --cpus=2 --memory=4096 --docker-env HTTP_PROXY=http://host.docker.internal:8801 --docker-env HTTPS_PROXY=http://host.docker.internal:8801 --docker-env NO_PROXY=localhost,127.0.0.1,::1,192.168.49.0/24,10.96.0.0/12 │ polar    │ leland │ v1.38.1 │ 03 Mar 26 14:41 CST │ 03 Mar 26 14:41 CST │
+│ stop           │ -p polar                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:26 CST │ 03 Mar 26 15:26 CST │
+│ start          │ -p polar --driver=docker --cpus=2 --memory=4096                                                                                                                                                                                               │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:26 CST │ 03 Mar 26 15:27 CST │
+│ stop           │ -p polar                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:29 CST │ 03 Mar 26 15:29 CST │
+│ delete         │ -p polar                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:29 CST │ 03 Mar 26 15:30 CST │
+│ start          │ -p polar --driver=docker --cpus=2 --memory=4096                                                                                                                                                                                               │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:30 CST │ 03 Mar 26 15:30 CST │
+│ update-context │ polar update-context                                                                                                                                                                                                                          │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:36 CST │ 03 Mar 26 15:36 CST │
+│ docker-env     │ polar docker-env -u                                                                                                                                                                                                                           │ polar    │ leland │ v1.38.1 │ 03 Mar 26 15:51 CST │ 03 Mar 26 15:51 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:07 CST │ 03 Mar 26 16:07 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:07 CST │ 03 Mar 26 16:07 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:08 CST │ 03 Mar 26 16:08 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:09 CST │ 03 Mar 26 16:09 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:11 CST │ 03 Mar 26 16:11 CST │
+│ ip             │ polar ip                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:15 CST │ 03 Mar 26 16:15 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:15 CST │ 03 Mar 26 16:15 CST │
+│ ip             │ polar ip                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:15 CST │ 03 Mar 26 16:15 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:37 CST │ 03 Mar 26 16:37 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:54 CST │ 03 Mar 26 16:54 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:56 CST │ 03 Mar 26 16:56 CST │
+│ ip             │ polar ip                                                                                                                                                                                                                                      │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:56 CST │ 03 Mar 26 16:56 CST │
+│ docker-env     │ polar docker-env --shell sh                                                                                                                                                                                                                   │ polar    │ leland │ v1.38.1 │ 03 Mar 26 16:57 CST │ 03 Mar 26 16:57 CST │
+│ image          │ load config-service --profile polar                                                                                                                                                                                                           │ polar    │ leland │ v1.38.1 │ 03 Mar 26 18:45 CST │ 03 Mar 26 18:45 CST │
+│ image          │ ls                                                                                                                                                                                                                                            │ minikube │ leland │ v1.38.1 │ 03 Mar 26 18:45 CST │                     │
+│ image          │ ls                                                                                                                                                                                                                                            │ minikube │ leland │ v1.38.1 │ 03 Mar 26 18:46 CST │                     │
+└────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────┴────────┴─────────┴─────────────────────┴─────────────────────┘
+
+
+==> Last Start <==
+Log file created at: 2026/03/03 15:30:14
+Running on machine: Leland-laptop
+Binary: Built with gc go1.25.5 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0303 15:30:14.752400  395980 out.go:360] Setting OutFile to fd 1 ...
+I0303 15:30:14.752886  395980 out.go:413] isatty.IsTerminal(1) = true
+I0303 15:30:14.752889  395980 out.go:374] Setting ErrFile to fd 2...
+I0303 15:30:14.752893  395980 out.go:413] isatty.IsTerminal(2) = true
+I0303 15:30:14.753056  395980 root.go:338] Updating PATH: /home/leland/.minikube/bin
+I0303 15:30:14.754036  395980 out.go:368] Setting JSON to false
+I0303 15:30:14.755447  395980 start.go:134] hostinfo: {"hostname":"Leland-laptop","uptime":437460,"bootTime":1772085554,"procs":54,"os":"linux","platform":"ubuntu","platformFamily":"debian","platformVersion":"24.04","kernelVersion":"6.6.114.1-microsoft-standard-WSL2","kernelArch":"x86_64","virtualizationSystem":"kvm","virtualizationRole":"guest","hostId":"ba8b628e-523f-462a-b8a7-6358a303ca66"}
+I0303 15:30:14.755500  395980 start.go:144] virtualization: kvm guest
+I0303 15:30:14.758518  395980 out.go:179] 😄  [polar] minikube v1.38.1 on Ubuntu 24.04 (kvm/amd64)
+I0303 15:30:14.761151  395980 notify.go:220] Checking for updates...
+I0303 15:30:14.761321  395980 driver.go:422] Setting default libvirt URI to qemu:///system
+I0303 15:30:14.806026  395980 docker.go:125] docker version: linux-28.5.2:Docker Desktop 4.51.0 (210443)
+I0303 15:30:14.806174  395980 cli_runner.go:164] Run: docker system info --format "{{json .}}"
+I0303 15:30:14.970502  395980 info.go:266] docker info: {ID:351a79af-042f-42c4-9bb7-00b6ac454c3d Containers:33 ContainersRunning:1 ContainersPaused:0 ContainersStopped:32 Images:80 Driver:overlayfs DriverStatus:[[driver-type io.containerd.snapshotter.v1]] SystemStatus:<nil> Plugins:{Volume:[local] Network:[bridge host ipvlan macvlan null overlay] Authorization:<nil> Log:[awslogs fluentd gcplogs gelf journald json-file local splunk syslog]} MemoryLimit:true SwapLimit:true KernelMemory:false KernelMemoryTCP:false CPUCfsPeriod:true CPUCfsQuota:true CPUShares:true CPUSet:true PidsLimit:true IPv4Forwarding:true BridgeNfIptables:false BridgeNfIP6Tables:false Debug:false NFd:59 OomKillDisable:false NGoroutines:107 SystemTime:2026-03-03 07:30:14.955220212 +0000 UTC LoggingDriver:json-file CgroupDriver:cgroupfs NEventsListener:14 KernelVersion:6.6.114.1-microsoft-standard-WSL2 OperatingSystem:Docker Desktop OSType:linux Architecture:x86_64 IndexServerAddress:https://index.docker.io/v1/ RegistryConfig:{AllowNondistributableArtifactsCIDRs:[] AllowNondistributableArtifactsHostnames:[] InsecureRegistryCIDRs:[::1/128 127.0.0.0/8] IndexConfigs:{DockerIo:{Name:docker.io Mirrors:[] Secure:true Official:true}} Mirrors:[]} NCPU:16 MemTotal:31472029696 GenericResources:<nil> DockerRootDir:/var/lib/docker HTTPProxy:http.docker.internal:3128 HTTPSProxy:http.docker.internal:3128 NoProxy:hubproxy.docker.internal Name:docker-desktop Labels:[com.docker.desktop.address=unix:///var/run/docker-cli.sock] ExperimentalBuild:false ServerVersion:28.5.2 ClusterStore: ClusterAdvertise: Runtimes:{Runc:{Path:runc}} DefaultRuntime:runc Swarm:{NodeID: NodeAddr: LocalNodeState:inactive ControlAvailable:false Error: RemoteManagers:<nil>} LiveRestoreEnabled:false Isolation: InitBinary:docker-init ContainerdCommit:{ID:442cb34bda9a6a0fed82a2ca7cade05c5c749582 Expected:} RuncCommit:{ID:v1.3.3-0-gd842d771 Expected:} InitCommit:{ID:de40ad0 Expected:} SecurityOptions:[name=seccomp,profile=builtin name=cgroupns] ProductLicense: Warnings:<nil> ServerErrors:[] ClientInfo:{Debug:false Plugins:[map[Name:ai Path:/usr/local/lib/docker/cli-plugins/docker-ai SchemaVersion:0.1.0 ShortDescription:Docker AI Agent - Ask Gordon Vendor:Docker Inc. Version:v1.9.11] map[Name:buildx Path:/usr/local/lib/docker/cli-plugins/docker-buildx SchemaVersion:0.1.0 ShortDescription:Docker Buildx Vendor:Docker Inc. Version:v0.29.1-desktop.1] map[Name:compose Path:/usr/local/lib/docker/cli-plugins/docker-compose SchemaVersion:0.1.0 ShortDescription:Docker Compose Vendor:Docker Inc. Version:v2.40.3-desktop.1] map[Name:debug Path:/usr/local/lib/docker/cli-plugins/docker-debug SchemaVersion:0.1.0 ShortDescription:Get a shell into any image or container Vendor:Docker Inc. Version:0.0.45] map[Name:desktop Path:/usr/local/lib/docker/cli-plugins/docker-desktop SchemaVersion:0.1.0 ShortDescription:Docker Desktop commands Vendor:Docker Inc. Version:v0.2.0] map[Name:extension Path:/usr/local/lib/docker/cli-plugins/docker-extension SchemaVersion:0.1.0 ShortDescription:Manages Docker extensions Vendor:Docker Inc. Version:v0.2.31] map[Name:init Path:/usr/local/lib/docker/cli-plugins/docker-init SchemaVersion:0.1.0 ShortDescription:Creates Docker-related starter files for your project Vendor:Docker Inc. Version:v1.4.0] map[Name:mcp Path:/usr/local/lib/docker/cli-plugins/docker-mcp SchemaVersion:0.1.0 ShortDescription:Docker MCP Plugin Vendor:Docker Inc. Version:v0.27.0] map[Name:model Path:/usr/local/lib/docker/cli-plugins/docker-model SchemaVersion:0.1.0 ShortDescription:Docker Model Runner Vendor:Docker Inc. Version:v0.1.46] map[Name:offload Path:/usr/local/lib/docker/cli-plugins/docker-offload SchemaVersion:0.1.0 ShortDescription:Docker Offload Vendor:Docker Inc. Version:v0.5.17] map[Name:sandbox Path:/usr/local/lib/docker/cli-plugins/docker-sandbox SchemaVersion:0.1.0 ShortDescription:Docker Sandbox Vendor:Docker Inc. Version:v0.5.3] map[Name:sbom Path:/usr/local/lib/docker/cli-plugins/docker-sbom SchemaVersion:0.1.0 ShortDescription:View the packaged-based Software Bill Of Materials (SBOM) for an image URL:https://github.com/docker/sbom-cli-plugin Vendor:Anchore Inc. Version:0.6.0] map[Name:scout Path:/usr/local/lib/docker/cli-plugins/docker-scout SchemaVersion:0.1.0 ShortDescription:Docker Scout Vendor:Docker Inc. Version:v1.18.3]] Warnings:<nil>}}
+I0303 15:30:14.970634  395980 docker.go:320] overlay module found
+I0303 15:30:14.973725  395980 out.go:179] ✨  Using the docker driver based on user configuration
+I0303 15:30:14.976101  395980 start.go:310] selected driver: docker
+I0303 15:30:14.976119  395980 start.go:935] validating driver "docker" against <nil>
+I0303 15:30:14.976136  395980 start.go:946] status for docker: {Installed:true Healthy:true Running:false NeedsImprovement:false Error:<nil> Reason: Fix: Doc: Version:}
+I0303 15:30:14.977679  395980 cli_runner.go:164] Run: docker system info --format "{{json .}}"
+I0303 15:30:15.156084  395980 info.go:266] docker info: {ID:351a79af-042f-42c4-9bb7-00b6ac454c3d Containers:33 ContainersRunning:1 ContainersPaused:0 ContainersStopped:32 Images:80 Driver:overlayfs DriverStatus:[[driver-type io.containerd.snapshotter.v1]] SystemStatus:<nil> Plugins:{Volume:[local] Network:[bridge host ipvlan macvlan null overlay] Authorization:<nil> Log:[awslogs fluentd gcplogs gelf journald json-file local splunk syslog]} MemoryLimit:true SwapLimit:true KernelMemory:false KernelMemoryTCP:false CPUCfsPeriod:true CPUCfsQuota:true CPUShares:true CPUSet:true PidsLimit:true IPv4Forwarding:true BridgeNfIptables:false BridgeNfIP6Tables:false Debug:false NFd:59 OomKillDisable:false NGoroutines:107 SystemTime:2026-03-03 07:30:15.138430595 +0000 UTC LoggingDriver:json-file CgroupDriver:cgroupfs NEventsListener:14 KernelVersion:6.6.114.1-microsoft-standard-WSL2 OperatingSystem:Docker Desktop OSType:linux Architecture:x86_64 IndexServerAddress:https://index.docker.io/v1/ RegistryConfig:{AllowNondistributableArtifactsCIDRs:[] AllowNondistributableArtifactsHostnames:[] InsecureRegistryCIDRs:[::1/128 127.0.0.0/8] IndexConfigs:{DockerIo:{Name:docker.io Mirrors:[] Secure:true Official:true}} Mirrors:[]} NCPU:16 MemTotal:31472029696 GenericResources:<nil> DockerRootDir:/var/lib/docker HTTPProxy:http.docker.internal:3128 HTTPSProxy:http.docker.internal:3128 NoProxy:hubproxy.docker.internal Name:docker-desktop Labels:[com.docker.desktop.address=unix:///var/run/docker-cli.sock] ExperimentalBuild:false ServerVersion:28.5.2 ClusterStore: ClusterAdvertise: Runtimes:{Runc:{Path:runc}} DefaultRuntime:runc Swarm:{NodeID: NodeAddr: LocalNodeState:inactive ControlAvailable:false Error: RemoteManagers:<nil>} LiveRestoreEnabled:false Isolation: InitBinary:docker-init ContainerdCommit:{ID:442cb34bda9a6a0fed82a2ca7cade05c5c749582 Expected:} RuncCommit:{ID:v1.3.3-0-gd842d771 Expected:} InitCommit:{ID:de40ad0 Expected:} SecurityOptions:[name=seccomp,profile=builtin name=cgroupns] ProductLicense: Warnings:<nil> ServerErrors:[] ClientInfo:{Debug:false Plugins:[map[Name:ai Path:/usr/local/lib/docker/cli-plugins/docker-ai SchemaVersion:0.1.0 ShortDescription:Docker AI Agent - Ask Gordon Vendor:Docker Inc. Version:v1.9.11] map[Name:buildx Path:/usr/local/lib/docker/cli-plugins/docker-buildx SchemaVersion:0.1.0 ShortDescription:Docker Buildx Vendor:Docker Inc. Version:v0.29.1-desktop.1] map[Name:compose Path:/usr/local/lib/docker/cli-plugins/docker-compose SchemaVersion:0.1.0 ShortDescription:Docker Compose Vendor:Docker Inc. Version:v2.40.3-desktop.1] map[Name:debug Path:/usr/local/lib/docker/cli-plugins/docker-debug SchemaVersion:0.1.0 ShortDescription:Get a shell into any image or container Vendor:Docker Inc. Version:0.0.45] map[Name:desktop Path:/usr/local/lib/docker/cli-plugins/docker-desktop SchemaVersion:0.1.0 ShortDescription:Docker Desktop commands Vendor:Docker Inc. Version:v0.2.0] map[Name:extension Path:/usr/local/lib/docker/cli-plugins/docker-extension SchemaVersion:0.1.0 ShortDescription:Manages Docker extensions Vendor:Docker Inc. Version:v0.2.31] map[Name:init Path:/usr/local/lib/docker/cli-plugins/docker-init SchemaVersion:0.1.0 ShortDescription:Creates Docker-related starter files for your project Vendor:Docker Inc. Version:v1.4.0] map[Name:mcp Path:/usr/local/lib/docker/cli-plugins/docker-mcp SchemaVersion:0.1.0 ShortDescription:Docker MCP Plugin Vendor:Docker Inc. Version:v0.27.0] map[Name:model Path:/usr/local/lib/docker/cli-plugins/docker-model SchemaVersion:0.1.0 ShortDescription:Docker Model Runner Vendor:Docker Inc. Version:v0.1.46] map[Name:offload Path:/usr/local/lib/docker/cli-plugins/docker-offload SchemaVersion:0.1.0 ShortDescription:Docker Offload Vendor:Docker Inc. Version:v0.5.17] map[Name:sandbox Path:/usr/local/lib/docker/cli-plugins/docker-sandbox SchemaVersion:0.1.0 ShortDescription:Docker Sandbox Vendor:Docker Inc. Version:v0.5.3] map[Name:sbom Path:/usr/local/lib/docker/cli-plugins/docker-sbom SchemaVersion:0.1.0 ShortDescription:View the packaged-based Software Bill Of Materials (SBOM) for an image URL:https://github.com/docker/sbom-cli-plugin Vendor:Anchore Inc. Version:0.6.0] map[Name:scout Path:/usr/local/lib/docker/cli-plugins/docker-scout SchemaVersion:0.1.0 ShortDescription:Docker Scout Vendor:Docker Inc. Version:v1.18.3]] Warnings:<nil>}}
+W0303 15:30:15.156321  395980 out.go:285] ❗  Starting v1.39.0, minikube will default to "containerd" container runtime. See #21973 for more info.
+I0303 15:30:15.156439  395980 start_flags.go:332] no existing cluster config was found, will generate one from the flags 
+I0303 15:30:15.157063  395980 start_flags.go:1000] Wait components to verify : map[apiserver:true system_pods:true]
+I0303 15:30:15.161529  395980 out.go:179] 📌  Using Docker driver with root privileges
+W0303 15:30:15.164195  395980 out.go:285] ❗  For an improved experience it's recommended to use Docker Engine instead of Docker Desktop.
+Docker Engine installation instructions: https://docs.docker.com/engine/install/#server
+I0303 15:30:15.164285  395980 cni.go:83] Creating CNI manager for ""
+I0303 15:30:15.164347  395980 cni.go:157] "docker" driver + "docker" container runtime found on kubernetes v1.24+, recommending bridge
+I0303 15:30:15.164353  395980 start_flags.go:341] Found "bridge CNI" CNI - setting NetworkPlugin=cni
+W0303 15:30:15.164427  395980 out.go:285] ❗  Local proxy ignored: not passing HTTP_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:15.164473  395980 out.go:285] ❗  Local proxy ignored: not passing HTTPS_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:15.164567  395980 out.go:285] ❗  Local proxy ignored: not passing HTTP_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:15.164623  395980 out.go:285] ❗  Local proxy ignored: not passing HTTPS_PROXY=http://127.0.0.1:8801 to docker env.
+I0303 15:30:15.164754  395980 start.go:358] cluster config:
+{Name:polar KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 Memory:4096 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.35.1 ClusterName:polar Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP: Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s MountString: Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false DisableCoreDNSLog:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s Rosetta:false}
+I0303 15:30:15.169801  395980 out.go:179] 👍  Starting "polar" primary control-plane node in "polar" cluster
+I0303 15:30:15.172408  395980 cache.go:135] Beginning downloading kic base image for docker with docker
+I0303 15:30:15.175332  395980 out.go:179] 🚜  Pulling base image v0.0.50 ...
+I0303 15:30:15.178306  395980 preload.go:187] Checking if preload exists for k8s version v1.35.1 and runtime docker
+I0303 15:30:15.178378  395980 preload.go:202] Found local preload: /home/leland/.minikube/cache/preloaded-tarball/preloaded-images-k8s-v18-v1.35.1-docker-overlay2-amd64.tar.lz4
+I0303 15:30:15.178390  395980 cache.go:66] Caching tarball of preloaded images
+I0303 15:30:15.178498  395980 image.go:82] Checking for gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 in local docker daemon
+I0303 15:30:15.178582  395980 preload.go:250] Found /home/leland/.minikube/cache/preloaded-tarball/preloaded-images-k8s-v18-v1.35.1-docker-overlay2-amd64.tar.lz4 in cache, skipping download
+I0303 15:30:15.178596  395980 cache.go:69] Finished verifying existence of preloaded tar for v1.35.1 on docker
+I0303 15:30:15.179064  395980 profile.go:143] Saving config to /home/leland/.minikube/profiles/polar/config.json ...
+I0303 15:30:15.179094  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/config.json: {Name:mk72312cda1c3ad22e4b10cf1b7453d4fa254bfa Timeout:1m0s Delay:500ms}
+I0303 15:30:15.791281  395980 cache.go:164] Downloading gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 to local cache
+I0303 15:30:15.791472  395980 image.go:66] Checking for gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 in local cache directory
+I0303 15:30:15.791499  395980 image.go:69] Found gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 in local cache directory, skipping pull
+I0303 15:30:15.791503  395980 image.go:138] gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 exists in cache, skipping pull
+I0303 15:30:15.791513  395980 cache.go:167] successfully saved gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 as a tarball
+I0303 15:30:15.791516  395980 cache.go:177] Loading gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 from local cache
+I0303 15:30:21.151041  395980 cache.go:179] successfully loaded and using gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 from cached tarball
+I0303 15:30:21.151098  395980 cache.go:244] Successfully downloaded all kic artifacts
+I0303 15:30:21.151195  395980 start.go:359] acquireMachinesLock for polar: {Name:mk9c88751d03f00611b88b8b877d71af31ded875 Timeout:10m0s Delay:500ms}
+I0303 15:30:21.151258  395980 start.go:363] duration metric: took 50.073µs to acquireMachinesLock for "polar"
+I0303 15:30:21.151272  395980 start.go:92] Provisioning new machine with config: &{Name:polar KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 Memory:4096 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.35.1 ClusterName:polar Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP: Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s MountString: Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false DisableCoreDNSLog:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s Rosetta:false} &{Name: IP: Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}
+I0303 15:30:21.151359  395980 start.go:124] createHost starting for "" (driver="docker")
+I0303 15:30:21.154129  395980 out.go:252] 🔥  Creating docker container (CPUs=2, Memory=4096MB) ...
+W0303 15:30:21.154510  395980 out.go:285] ❗  Local proxy ignored: not passing HTTP_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:21.154624  395980 out.go:285] ❗  Local proxy ignored: not passing HTTPS_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:21.154705  395980 out.go:285] ❗  Local proxy ignored: not passing HTTP_PROXY=http://127.0.0.1:8801 to docker env.
+W0303 15:30:21.154758  395980 out.go:285] ❗  Local proxy ignored: not passing HTTPS_PROXY=http://127.0.0.1:8801 to docker env.
+I0303 15:30:21.154781  395980 start.go:158] libmachine.API.Create for "polar" (driver="docker")
+I0303 15:30:21.154800  395980 client.go:173] LocalClient.Create starting
+I0303 15:30:21.155016  395980 main.go:144] libmachine: Reading certificate data from /home/leland/.minikube/certs/ca.pem
+I0303 15:30:21.155065  395980 main.go:144] libmachine: Decoding PEM data...
+I0303 15:30:21.155084  395980 main.go:144] libmachine: Parsing certificate...
+I0303 15:30:21.155203  395980 main.go:144] libmachine: Reading certificate data from /home/leland/.minikube/certs/cert.pem
+I0303 15:30:21.155232  395980 main.go:144] libmachine: Decoding PEM data...
+I0303 15:30:21.155244  395980 main.go:144] libmachine: Parsing certificate...
+I0303 15:30:21.156281  395980 cli_runner.go:164] Run: docker network inspect polar --format "{"Name": "{{.Name}}","Driver": "{{.Driver}}","Subnet": "{{range .IPAM.Config}}{{.Subnet}}{{end}}","Gateway": "{{range .IPAM.Config}}{{.Gateway}}{{end}}","MTU": {{if (index .Options "com.docker.network.driver.mtu")}}{{(index .Options "com.docker.network.driver.mtu")}}{{else}}0{{end}}, "ContainerIPs": [{{range $k,$v := .Containers }}"{{$v.IPv4Address}}",{{end}}]}"
+W0303 15:30:21.185985  395980 cli_runner.go:211] docker network inspect polar --format "{"Name": "{{.Name}}","Driver": "{{.Driver}}","Subnet": "{{range .IPAM.Config}}{{.Subnet}}{{end}}","Gateway": "{{range .IPAM.Config}}{{.Gateway}}{{end}}","MTU": {{if (index .Options "com.docker.network.driver.mtu")}}{{(index .Options "com.docker.network.driver.mtu")}}{{else}}0{{end}}, "ContainerIPs": [{{range $k,$v := .Containers }}"{{$v.IPv4Address}}",{{end}}]}" returned with exit code 1
+I0303 15:30:21.186092  395980 network_create.go:285] running [docker network inspect polar] to gather additional debugging logs...
+I0303 15:30:21.186105  395980 cli_runner.go:164] Run: docker network inspect polar
+W0303 15:30:21.212054  395980 cli_runner.go:211] docker network inspect polar returned with exit code 1
+I0303 15:30:21.212074  395980 network_create.go:288] error running [docker network inspect polar]: docker network inspect polar: exit status 1
+stdout:
+[]
+
+stderr:
+Error response from daemon: network polar not found
+I0303 15:30:21.212085  395980 network_create.go:290] output of [docker network inspect polar]: -- stdout --
+[]
+
+-- /stdout --
+** stderr ** 
+Error response from daemon: network polar not found
+
+** /stderr **
+I0303 15:30:21.212243  395980 cli_runner.go:164] Run: docker network inspect bridge --format "{"Name": "{{.Name}}","Driver": "{{.Driver}}","Subnet": "{{range .IPAM.Config}}{{.Subnet}}{{end}}","Gateway": "{{range .IPAM.Config}}{{.Gateway}}{{end}}","MTU": {{if (index .Options "com.docker.network.driver.mtu")}}{{(index .Options "com.docker.network.driver.mtu")}}{{else}}0{{end}}, "ContainerIPs": [{{range $k,$v := .Containers }}"{{$v.IPv4Address}}",{{end}}]}"
+I0303 15:30:21.339649  395980 network.go:205] using free private subnet 192.168.49.0/24: &{IP:192.168.49.0 Netmask:255.255.255.0 Prefix:24 CIDR:192.168.49.0/24 Gateway:192.168.49.1 ClientMin:192.168.49.2 ClientMax:192.168.49.254 Broadcast:192.168.49.255 IsPrivate:true Interface:{IfaceName: IfaceIPv4: IfaceMTU:0 IfaceMAC:} reservation:0xc00062c110}
+I0303 15:30:21.339704  395980 network_create.go:125] attempt to create docker network polar 192.168.49.0/24 with gateway 192.168.49.1 and MTU of 1500 ...
+I0303 15:30:21.339775  395980 cli_runner.go:164] Run: docker network create --driver=bridge --subnet=192.168.49.0/24 --gateway=192.168.49.1 -o --ip-masq -o --icc -o com.docker.network.driver.mtu=1500 --label=created_by.minikube.sigs.k8s.io=true --label=name.minikube.sigs.k8s.io=polar polar
+I0303 15:30:21.734627  395980 network_create.go:109] docker network polar 192.168.49.0/24 created
+I0303 15:30:21.734781  395980 kic.go:120] calculated static IP "192.168.49.2" for the "polar" container
+I0303 15:30:21.734961  395980 cli_runner.go:164] Run: docker ps -a --format {{.Names}}
+I0303 15:30:21.876607  395980 cli_runner.go:164] Run: docker volume create polar --label name.minikube.sigs.k8s.io=polar --label created_by.minikube.sigs.k8s.io=true
+I0303 15:30:21.907376  395980 oci.go:102] Successfully created a docker volume polar
+I0303 15:30:21.907511  395980 cli_runner.go:164] Run: docker run --rm --name polar-preload-sidecar --label created_by.minikube.sigs.k8s.io=true --label name.minikube.sigs.k8s.io=polar --entrypoint /usr/bin/test -v polar:/var gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 -d /var/lib
+I0303 15:30:22.800584  395980 oci.go:106] Successfully prepared a docker volume polar
+I0303 15:30:22.800908  395980 preload.go:187] Checking if preload exists for k8s version v1.35.1 and runtime docker
+I0303 15:30:22.800922  395980 kic.go:193] Starting extracting preloaded images to volume ...
+I0303 15:30:22.801070  395980 cli_runner.go:164] Run: docker run --rm --entrypoint /usr/bin/tar -v /home/leland/.minikube/cache/preloaded-tarball/preloaded-images-k8s-v18-v1.35.1-docker-overlay2-amd64.tar.lz4:/preloaded.tar:ro -v polar:/extractDir gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 -I lz4 -xf /preloaded.tar -C /extractDir
+I0303 15:30:27.634731  395980 cli_runner.go:217] Completed: docker run --rm --entrypoint /usr/bin/tar -v /home/leland/.minikube/cache/preloaded-tarball/preloaded-images-k8s-v18-v1.35.1-docker-overlay2-amd64.tar.lz4:/preloaded.tar:ro -v polar:/extractDir gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 -I lz4 -xf /preloaded.tar -C /extractDir: (4.833597713s)
+I0303 15:30:27.634914  395980 kic.go:202] duration metric: took 4.833985709s to extract preloaded images to volume ...
+W0303 15:30:27.635113  395980 cgroups_linux.go:77] Your kernel does not support swap limit capabilities or the cgroup is not mounted.
+W0303 15:30:27.635144  395980 oci.go:251] Your kernel does not support CPU cfs period/quota or the cgroup is not mounted.
+I0303 15:30:27.635273  395980 cli_runner.go:164] Run: docker info --format "'{{json .SecurityOptions}}'"
+I0303 15:30:27.807003  395980 cli_runner.go:164] Run: docker run -d -t --privileged --security-opt seccomp=unconfined --tmpfs /tmp --tmpfs /run -v /lib/modules:/lib/modules:ro --hostname polar --name polar --label created_by.minikube.sigs.k8s.io=true --label name.minikube.sigs.k8s.io=polar --label role.minikube.sigs.k8s.io= --label mode.minikube.sigs.k8s.io=polar --network polar --ip 192.168.49.2 --volume polar:/var --security-opt apparmor=unconfined --memory=4096mb -e container=docker --expose 8443 --publish=127.0.0.1::8443 --publish=127.0.0.1::22 --publish=127.0.0.1::2376 --publish=127.0.0.1::5000 --publish=127.0.0.1::32443 gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93
+I0303 15:30:30.025007  395980 cli_runner.go:217] Completed: docker run -d -t --privileged --security-opt seccomp=unconfined --tmpfs /tmp --tmpfs /run -v /lib/modules:/lib/modules:ro --hostname polar --name polar --label created_by.minikube.sigs.k8s.io=true --label name.minikube.sigs.k8s.io=polar --label role.minikube.sigs.k8s.io= --label mode.minikube.sigs.k8s.io=polar --network polar --ip 192.168.49.2 --volume polar:/var --security-opt apparmor=unconfined --memory=4096mb -e container=docker --expose 8443 --publish=127.0.0.1::8443 --publish=127.0.0.1::22 --publish=127.0.0.1::2376 --publish=127.0.0.1::5000 --publish=127.0.0.1::32443 gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93: (2.217920885s)
+I0303 15:30:30.025112  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Running}}
+I0303 15:30:30.053059  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:30.083053  395980 cli_runner.go:164] Run: docker exec polar stat /var/lib/dpkg/alternatives/iptables
+I0303 15:30:30.199435  395980 oci.go:143] the created container "polar" has a running status.
+I0303 15:30:30.199455  395980 kic.go:224] Creating ssh key for kic: /home/leland/.minikube/machines/polar/id_rsa...
+I0303 15:30:30.219607  395980 kic_runner.go:190] docker (temp): /home/leland/.minikube/machines/polar/id_rsa.pub --> /home/docker/.ssh/authorized_keys (381 bytes)
+I0303 15:30:30.263977  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:30.291765  395980 kic_runner.go:92] Run: chown docker:docker /home/docker/.ssh/authorized_keys
+I0303 15:30:30.291777  395980 kic_runner.go:113] Args: [docker exec --privileged polar chown docker:docker /home/docker/.ssh/authorized_keys]
+I0303 15:30:30.392610  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:30.422264  395980 machine.go:96] provisionDockerMachine start ...
+I0303 15:30:30.422393  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:30.451041  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:30.451321  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:30.451327  395980 main.go:144] libmachine: About to run SSH command:
+hostname
+I0303 15:30:30.452618  395980 main.go:144] libmachine: Error dialing TCP: ssh: handshake failed: read tcp 127.0.0.1:43408->127.0.0.1:42455: read: connection reset by peer
+I0303 15:30:33.644295  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: polar
+
+I0303 15:30:33.644326  395980 ubuntu.go:182] provisioning hostname "polar"
+I0303 15:30:33.644453  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:33.672921  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:33.673218  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:33.673225  395980 main.go:144] libmachine: About to run SSH command:
+sudo hostname polar && echo "polar" | sudo tee /etc/hostname
+I0303 15:30:33.884477  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: polar
+
+I0303 15:30:33.884679  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:33.915275  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:33.915482  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:33.915490  395980 main.go:144] libmachine: About to run SSH command:
+
+		if ! grep -xq '.*\spolar' /etc/hosts; then
+			if grep -xq '127.0.1.1\s.*' /etc/hosts; then
+				sudo sed -i 's/^127.0.1.1\s.*/127.0.1.1 polar/g' /etc/hosts;
+			else 
+				echo '127.0.1.1 polar' | sudo tee -a /etc/hosts; 
+			fi
+		fi
+I0303 15:30:34.104216  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: 
+I0303 15:30:34.104231  395980 ubuntu.go:188] set auth options {CertDir:/home/leland/.minikube CaCertPath:/home/leland/.minikube/certs/ca.pem CaPrivateKeyPath:/home/leland/.minikube/certs/ca-key.pem CaCertRemotePath:/etc/docker/ca.pem ServerCertPath:/home/leland/.minikube/machines/server.pem ServerKeyPath:/home/leland/.minikube/machines/server-key.pem ClientKeyPath:/home/leland/.minikube/certs/key.pem ServerCertRemotePath:/etc/docker/server.pem ServerKeyRemotePath:/etc/docker/server-key.pem ClientCertPath:/home/leland/.minikube/certs/cert.pem ServerCertSANs:[] StorePath:/home/leland/.minikube}
+I0303 15:30:34.104250  395980 ubuntu.go:190] setting up certificates
+I0303 15:30:34.104258  395980 provision.go:83] configureAuth start
+I0303 15:30:34.104340  395980 cli_runner.go:164] Run: docker container inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}},{{.GlobalIPv6Address}}{{end}}" polar
+I0303 15:30:34.129980  395980 provision.go:142] copyHostCerts
+I0303 15:30:34.130036  395980 exec_runner.go:143] found /home/leland/.minikube/ca.pem, removing ...
+I0303 15:30:34.130043  395980 exec_runner.go:202] rm: /home/leland/.minikube/ca.pem
+I0303 15:30:34.130123  395980 exec_runner.go:150] cp: /home/leland/.minikube/certs/ca.pem --> /home/leland/.minikube/ca.pem (1078 bytes)
+I0303 15:30:34.130234  395980 exec_runner.go:143] found /home/leland/.minikube/cert.pem, removing ...
+I0303 15:30:34.130237  395980 exec_runner.go:202] rm: /home/leland/.minikube/cert.pem
+I0303 15:30:34.130269  395980 exec_runner.go:150] cp: /home/leland/.minikube/certs/cert.pem --> /home/leland/.minikube/cert.pem (1123 bytes)
+I0303 15:30:34.130345  395980 exec_runner.go:143] found /home/leland/.minikube/key.pem, removing ...
+I0303 15:30:34.130347  395980 exec_runner.go:202] rm: /home/leland/.minikube/key.pem
+I0303 15:30:34.130379  395980 exec_runner.go:150] cp: /home/leland/.minikube/certs/key.pem --> /home/leland/.minikube/key.pem (1679 bytes)
+I0303 15:30:34.130456  395980 provision.go:116] generating server cert: /home/leland/.minikube/machines/server.pem ca-key=/home/leland/.minikube/certs/ca.pem private-key=/home/leland/.minikube/certs/ca-key.pem org=leland.polar san=[127.0.0.1 192.168.49.2 localhost minikube polar]
+I0303 15:30:34.199508  395980 provision.go:176] copyRemoteCerts
+I0303 15:30:34.199591  395980 ssh_runner.go:194] Run: sudo mkdir -p /etc/docker /etc/docker /etc/docker
+I0303 15:30:34.199681  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:34.227653  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:34.360667  395980 ssh_runner.go:361] scp /home/leland/.minikube/machines/server.pem --> /etc/docker/server.pem (1184 bytes)
+I0303 15:30:34.394478  395980 ssh_runner.go:361] scp /home/leland/.minikube/machines/server-key.pem --> /etc/docker/server-key.pem (1679 bytes)
+I0303 15:30:34.426065  395980 ssh_runner.go:361] scp /home/leland/.minikube/certs/ca.pem --> /etc/docker/ca.pem (1078 bytes)
+I0303 15:30:34.458154  395980 provision.go:86] duration metric: took 353.846147ms to configureAuth
+I0303 15:30:34.458215  395980 ubuntu.go:206] setting minikube options for container-runtime
+I0303 15:30:34.458411  395980 config.go:183] Loaded profile config "polar": Driver=docker, ContainerRuntime=docker, KubernetesVersion=v1.35.1
+I0303 15:30:34.458495  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:34.484189  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:34.484509  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:34.484517  395980 main.go:144] libmachine: About to run SSH command:
+df --output=fstype / | tail -n 1
+I0303 15:30:34.674813  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: overlay
+
+I0303 15:30:34.674824  395980 ubuntu.go:71] root file system type: overlay
+I0303 15:30:34.674950  395980 provision.go:313] Updating docker unit: /lib/systemd/system/docker.service ...
+I0303 15:30:34.675040  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:34.700435  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:34.700614  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:34.700672  395980 main.go:144] libmachine: About to run SSH command:
+sudo mkdir -p /lib/systemd/system && printf %s "[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network-online.target nss-lookup.target docker.socket firewalld.service containerd.service time-set.target
+Wants=network-online.target containerd.service
+Requires=docker.socket
+StartLimitBurst=3
+StartLimitIntervalSec=60
+
+[Service]
+Type=notify
+Restart=always
+
+Environment="NO_PROXY=localhost,127.0.0.1,192.168.49.2"
+
+
+# This file is a systemd drop-in unit that inherits from the base dockerd configuration.
+# The base configuration already specifies an 'ExecStart=...' command. The first directive
+# here is to clear out that command inherited from the base configuration. Without this,
+# the command from the base configuration and the command specified here are treated as
+# a sequence of commands, which is not the desired behavior, nor is it valid -- systemd
+# will catch this invalid input and refuse to start the service with an error like:
+#  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
+
+# NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
+# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
+ExecStart=
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 \
+	-H fd:// --containerd=/run/containerd/containerd.sock \
+	-H unix:///var/run/docker.sock \
+	--default-ulimit=nofile=1048576:1048576 \
+	--tlsverify \
+	--tlscacert /etc/docker/ca.pem \
+	--tlscert /etc/docker/server.pem \
+	--tlskey /etc/docker/server-key.pem --label provider=docker --insecure-registry 10.96.0.0/12 
+ExecReload=/bin/kill -s HUP \$MAINPID
+
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+TasksMax=infinity
+TimeoutStartSec=0
+
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+
+# kill only the docker process, not all processes in the cgroup
+KillMode=process
+OOMScoreAdjust=-500
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee /lib/systemd/system/docker.service.new
+I0303 15:30:34.912467  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: [Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network-online.target nss-lookup.target docker.socket firewalld.service containerd.service time-set.target
+Wants=network-online.target containerd.service
+Requires=docker.socket
+StartLimitBurst=3
+StartLimitIntervalSec=60
+
+[Service]
+Type=notify
+Restart=always
+
+Environment=NO_PROXY=localhost,127.0.0.1,192.168.49.2
+
+
+# This file is a systemd drop-in unit that inherits from the base dockerd configuration.
+# The base configuration already specifies an 'ExecStart=...' command. The first directive
+# here is to clear out that command inherited from the base configuration. Without this,
+# the command from the base configuration and the command specified here are treated as
+# a sequence of commands, which is not the desired behavior, nor is it valid -- systemd
+# will catch this invalid input and refuse to start the service with an error like:
+#  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
+
+# NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
+# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
+ExecStart=
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 	-H fd:// --containerd=/run/containerd/containerd.sock 	-H unix:///var/run/docker.sock 	--default-ulimit=nofile=1048576:1048576 	--tlsverify 	--tlscacert /etc/docker/ca.pem 	--tlscert /etc/docker/server.pem 	--tlskey /etc/docker/server-key.pem --label provider=docker --insecure-registry 10.96.0.0/12 
+ExecReload=/bin/kill -s HUP $MAINPID
+
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+TasksMax=infinity
+TimeoutStartSec=0
+
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+
+# kill only the docker process, not all processes in the cgroup
+KillMode=process
+OOMScoreAdjust=-500
+
+[Install]
+WantedBy=multi-user.target
+
+I0303 15:30:34.912569  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:34.939049  395980 main.go:144] libmachine: Using SSH client type: native
+I0303 15:30:34.939293  395980 main.go:144] libmachine: &{{{<nil> 0 [] [] []} docker [0x906360] 0x909000 <nil>  [] 0s} 127.0.0.1 42455 <nil> <nil>}
+I0303 15:30:34.939309  395980 main.go:144] libmachine: About to run SSH command:
+sudo diff -u /lib/systemd/system/docker.service /lib/systemd/system/docker.service.new || { sudo mv /lib/systemd/system/docker.service.new /lib/systemd/system/docker.service; sudo systemctl -f daemon-reload && sudo systemctl -f enable docker && sudo systemctl -f restart docker; }
+I0303 15:30:38.640408  395980 main.go:144] libmachine: SSH cmd err, output: <nil>: --- /lib/systemd/system/docker.service	2026-02-02 17:15:49.000000000 +0000
++++ /lib/systemd/system/docker.service.new	2026-03-03 07:30:34.906628371 +0000
+@@ -9,23 +9,35 @@
+ 
+ [Service]
+ Type=notify
+-# the default is not to use systemd for cgroups because the delegate issues still
+-# exists and systemd currently does not support the cgroup feature set required
+-# for containers run by docker
+-ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+-ExecReload=/bin/kill -s HUP $MAINPID
+-TimeoutStartSec=0
+-RestartSec=2
+ Restart=always
+ 
++Environment=NO_PROXY=localhost,127.0.0.1,192.168.49.2
++
++
++# This file is a systemd drop-in unit that inherits from the base dockerd configuration.
++# The base configuration already specifies an 'ExecStart=...' command. The first directive
++# here is to clear out that command inherited from the base configuration. Without this,
++# the command from the base configuration and the command specified here are treated as
++# a sequence of commands, which is not the desired behavior, nor is it valid -- systemd
++# will catch this invalid input and refuse to start the service with an error like:
++#  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
++
++# NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
++# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
++ExecStart=
++ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 	-H fd:// --containerd=/run/containerd/containerd.sock 	-H unix:///var/run/docker.sock 	--default-ulimit=nofile=1048576:1048576 	--tlsverify 	--tlscacert /etc/docker/ca.pem 	--tlscert /etc/docker/server.pem 	--tlskey /etc/docker/server-key.pem --label provider=docker --insecure-registry 10.96.0.0/12 
++ExecReload=/bin/kill -s HUP $MAINPID
++
+ # Having non-zero Limit*s causes performance problems due to accounting overhead
+ # in the kernel. We recommend using cgroups to do container-local accounting.
++LimitNOFILE=infinity
+ LimitNPROC=infinity
+ LimitCORE=infinity
+ 
+-# Comment TasksMax if your systemd version does not support it.
+-# Only systemd 226 and above support this option.
++# Uncomment TasksMax if your systemd version supports it.
++# Only systemd 226 and above support this version.
+ TasksMax=infinity
++TimeoutStartSec=0
+ 
+ # set delegate yes so that systemd does not reset the cgroups of docker containers
+ Delegate=yes
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+
+I0303 15:30:38.640427  395980 machine.go:99] duration metric: took 8.228023964s to provisionDockerMachine
+I0303 15:30:38.640437  395980 client.go:176] duration metric: took 17.495505872s to LocalClient.Create
+I0303 15:30:38.640500  395980 start.go:166] duration metric: took 17.495594483s to libmachine.API.Create "polar"
+I0303 15:30:38.640517  395980 start.go:292] postStartSetup for "polar" (driver="docker")
+I0303 15:30:38.640524  395980 start.go:321] creating required directories: [/etc/kubernetes/addons /etc/kubernetes/manifests /var/tmp/minikube /var/lib/minikube /var/lib/minikube/certs /var/lib/minikube/images /var/lib/minikube/binaries /tmp/gvisor /usr/share/ca-certificates /etc/ssl/certs]
+I0303 15:30:38.640586  395980 ssh_runner.go:194] Run: sudo mkdir -p /etc/kubernetes/addons /etc/kubernetes/manifests /var/tmp/minikube /var/lib/minikube /var/lib/minikube/certs /var/lib/minikube/images /var/lib/minikube/binaries /tmp/gvisor /usr/share/ca-certificates /etc/ssl/certs
+I0303 15:30:38.640641  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:38.666572  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:38.794815  395980 ssh_runner.go:194] Run: cat /etc/os-release
+I0303 15:30:38.799281  395980 main.go:144] libmachine: Couldn't set key VERSION_CODENAME, no corresponding struct field found
+I0303 15:30:38.799295  395980 info.go:137] Remote host: Debian GNU/Linux 12 (bookworm)
+I0303 15:30:38.799307  395980 filesync.go:125] Scanning /home/leland/.minikube/addons for local assets ...
+I0303 15:30:38.799362  395980 filesync.go:125] Scanning /home/leland/.minikube/files for local assets ...
+I0303 15:30:38.799426  395980 start.go:295] duration metric: took 158.903335ms for postStartSetup
+I0303 15:30:38.799824  395980 cli_runner.go:164] Run: docker container inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}},{{.GlobalIPv6Address}}{{end}}" polar
+I0303 15:30:38.826107  395980 profile.go:143] Saving config to /home/leland/.minikube/profiles/polar/config.json ...
+I0303 15:30:38.826449  395980 ssh_runner.go:194] Run: sh -c "df -h /var | awk 'NR==2{print $5}'"
+I0303 15:30:38.826494  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:38.853105  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:38.975606  395980 ssh_runner.go:194] Run: sh -c "df -BG /var | awk 'NR==2{print $4}'"
+I0303 15:30:38.982153  395980 start.go:127] duration metric: took 17.840591895s to createHost
+I0303 15:30:38.982170  395980 start.go:82] releasing machines lock for "polar", held for 17.840780054s
+I0303 15:30:38.982259  395980 cli_runner.go:164] Run: docker container inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}},{{.GlobalIPv6Address}}{{end}}" polar
+I0303 15:30:39.010366  395980 out.go:179] 🌐  Found network options:
+I0303 15:30:39.013075  395980 out.go:179]     ▪ HTTP_PROXY=http://127.0.0.1:8801
+I0303 15:30:39.015655  395980 out.go:179]     ▪ HTTPS_PROXY=http://127.0.0.1:8801
+I0303 15:30:39.018080  395980 out.go:179]     ▪ NO_PROXY=localhost,127.0.0.1,192.168.49.2
+I0303 15:30:39.020627  395980 out.go:179]     ▪ HTTP_PROXY=http://127.0.0.1:8801
+I0303 15:30:39.023619  395980 out.go:179]     ▪ HTTPS_PROXY=http://127.0.0.1:8801
+I0303 15:30:39.026447  395980 out.go:179]     ▪ NO_PROXY=localhost,127.0.0.1,192.168.49.2
+I0303 15:30:39.029069  395980 ssh_runner.go:194] Run: cat /version.json
+I0303 15:30:39.029135  395980 ssh_runner.go:194] Run: curl -x http://127.0.0.1:8801 -sS -m 2 https://registry.k8s.io/
+I0303 15:30:39.029150  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:39.029299  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:39.058449  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:39.059567  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+W0303 15:30:39.204171  395980 start.go:887] [curl -x http://127.0.0.1:8801 -sS -m 2 https://registry.k8s.io/] failed: curl -x http://127.0.0.1:8801 -sS -m 2 https://registry.k8s.io/: Process exited with status 7
+stdout:
+
+stderr:
+curl: (7) Failed to connect to 127.0.0.1 port 8801 after 0 ms: Couldn't connect to server
+I0303 15:30:39.210644  395980 ssh_runner.go:194] Run: systemctl --version
+I0303 15:30:39.218824  395980 ssh_runner.go:194] Run: sh -c "stat /etc/cni/net.d/*loopback.conf*"
+W0303 15:30:39.225233  395980 cni.go:208] loopback cni configuration skipped: "/etc/cni/net.d/*loopback.conf*" not found
+I0303 15:30:39.225296  395980 ssh_runner.go:194] Run: sudo find /etc/cni/net.d -maxdepth 1 -type f ( ( -name *bridge* -or -name *podman* ) -and -not -name *.mk_disabled ) -printf "%p, " -exec sh -c "sudo mv {} {}.mk_disabled" ;
+I0303 15:30:39.263818  395980 cni.go:261] disabled [/etc/cni/net.d/87-podman-bridge.conflist, /etc/cni/net.d/10-crio-bridge.conflist.disabled] bridge cni config(s)
+I0303 15:30:39.263833  395980 start.go:497] detecting cgroup driver to use...
+I0303 15:30:39.263870  395980 detect.go:178] detected "systemd" cgroup driver on host os
+I0303 15:30:39.264044  395980 ssh_runner.go:194] Run: /bin/bash -c "sudo mkdir -p /etc && printf %s "runtime-endpoint: unix:///run/containerd/containerd.sock
+" | sudo tee /etc/crictl.yaml"
+I0303 15:30:39.286752  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i -r 's|^( *)sandbox_image = .*$|\1sandbox_image = "registry.k8s.io/pause:3.10.1"|' /etc/containerd/config.toml"
+I0303 15:30:39.299919  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i -r 's|^( *)restrict_oom_score_adj = .*$|\1restrict_oom_score_adj = false|' /etc/containerd/config.toml"
+I0303 15:30:39.312925  395980 containerd.go:146] configuring containerd to use "systemd" as cgroup driver...
+I0303 15:30:39.313029  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i -r 's|^( *)SystemdCgroup = .*$|\1SystemdCgroup = true|g' /etc/containerd/config.toml"
+I0303 15:30:39.325866  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i 's|"io.containerd.runtime.v1.linux"|"io.containerd.runc.v2"|g' /etc/containerd/config.toml"
+I0303 15:30:39.338283  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i '/systemd_cgroup/d' /etc/containerd/config.toml"
+I0303 15:30:39.351163  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i 's|"io.containerd.runc.v1"|"io.containerd.runc.v2"|g' /etc/containerd/config.toml"
+I0303 15:30:39.364126  395980 ssh_runner.go:194] Run: sh -c "sudo rm -rf /etc/cni/net.mk"
+I0303 15:30:39.376255  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i -r 's|^( *)conf_dir = .*$|\1conf_dir = "/etc/cni/net.d"|g' /etc/containerd/config.toml"
+I0303 15:30:39.389335  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i '/^ *enable_unprivileged_ports = .*/d' /etc/containerd/config.toml"
+I0303 15:30:39.401913  395980 ssh_runner.go:194] Run: sh -c "sudo sed -i -r 's|^( *)\[plugins."io.containerd.grpc.v1.cri"\]|&\n\1  enable_unprivileged_ports = true|' /etc/containerd/config.toml"
+I0303 15:30:39.414511  395980 ssh_runner.go:194] Run: sudo sysctl net.bridge.bridge-nf-call-iptables
+I0303 15:30:39.425495  395980 ssh_runner.go:194] Run: sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+I0303 15:30:39.437411  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:39.538419  395980 ssh_runner.go:194] Run: sudo systemctl restart containerd
+I0303 15:30:39.724941  395980 start.go:497] detecting cgroup driver to use...
+I0303 15:30:39.725031  395980 detect.go:178] detected "systemd" cgroup driver on host os
+I0303 15:30:39.725108  395980 ssh_runner.go:194] Run: sudo systemctl cat docker.service
+I0303 15:30:39.759077  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service containerd
+I0303 15:30:39.778573  395980 ssh_runner.go:194] Run: sudo systemctl stop -f containerd
+I0303 15:30:39.816153  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service containerd
+I0303 15:30:39.832809  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service crio
+I0303 15:30:39.850036  395980 ssh_runner.go:194] Run: /bin/bash -c "sudo mkdir -p /etc && printf %s "runtime-endpoint: unix:///var/run/cri-dockerd.sock
+" | sudo tee /etc/crictl.yaml"
+I0303 15:30:39.873416  395980 ssh_runner.go:194] Run: which cri-dockerd
+I0303 15:30:39.878836  395980 ssh_runner.go:194] Run: sudo mkdir -p /etc/systemd/system/cri-docker.service.d
+I0303 15:30:39.892653  395980 ssh_runner.go:361] scp memory --> /etc/systemd/system/cri-docker.service.d/10-cni.conf (192 bytes)
+I0303 15:30:39.914737  395980 ssh_runner.go:194] Run: sudo systemctl unmask docker.service
+I0303 15:30:40.021472  395980 ssh_runner.go:194] Run: sudo systemctl enable docker.socket
+I0303 15:30:40.122109  395980 docker.go:577] configuring docker to use "systemd" as cgroup driver...
+I0303 15:30:40.122237  395980 ssh_runner.go:361] scp memory --> /etc/docker/daemon.json (129 bytes)
+I0303 15:30:40.143557  395980 ssh_runner.go:194] Run: sudo systemctl reset-failed docker
+I0303 15:30:40.159379  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:40.259012  395980 ssh_runner.go:194] Run: sudo systemctl restart docker
+W0303 15:30:40.581215  395980 out.go:285] ❗  Failing to connect to https://registry.k8s.io/ from inside the minikube container
+W0303 15:30:40.581271  395980 out.go:285] 💡  To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/
+I0303 15:30:43.348487  395980 ssh_runner.go:234] Completed: sudo systemctl restart docker: (3.089453607s)
+I0303 15:30:43.348549  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service docker
+I0303 15:30:43.363618  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service cri-docker.socket
+I0303 15:30:43.379513  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service cri-docker.service
+I0303 15:30:43.395083  395980 ssh_runner.go:194] Run: sudo systemctl unmask cri-docker.socket
+I0303 15:30:43.496063  395980 ssh_runner.go:194] Run: sudo systemctl enable cri-docker.socket
+I0303 15:30:43.599432  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:43.699671  395980 ssh_runner.go:194] Run: sudo systemctl restart cri-docker.socket
+I0303 15:30:43.752365  395980 ssh_runner.go:194] Run: sudo systemctl reset-failed cri-docker.service
+I0303 15:30:43.767888  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:43.866647  395980 ssh_runner.go:194] Run: sudo systemctl restart cri-docker.service
+I0303 15:30:44.010279  395980 ssh_runner.go:194] Run: sudo systemctl is-active --quiet service cri-docker.service
+I0303 15:30:44.040296  395980 start.go:554] Will wait 60s for socket path /var/run/cri-dockerd.sock
+I0303 15:30:44.040411  395980 ssh_runner.go:194] Run: stat /var/run/cri-dockerd.sock
+I0303 15:30:44.046339  395980 start.go:575] Will wait 60s for crictl version
+I0303 15:30:44.046415  395980 ssh_runner.go:194] Run: which crictl
+I0303 15:30:44.051597  395980 ssh_runner.go:194] Run: sudo /usr/local/bin/crictl version
+I0303 15:30:44.095053  395980 start.go:591] Version:  0.1.0
+RuntimeName:  docker
+RuntimeVersion:  29.2.1
+RuntimeApiVersion:  v1
+I0303 15:30:44.095165  395980 ssh_runner.go:194] Run: docker version --format {{.Server.Version}}
+I0303 15:30:44.134678  395980 ssh_runner.go:194] Run: docker version --format {{.Server.Version}}
+I0303 15:30:44.165879  395980 out.go:252] 🐳  Preparing Kubernetes v1.35.1 on Docker 29.2.1 ...
+I0303 15:30:44.168315  395980 out.go:179]     ▪ env NO_PROXY=localhost,127.0.0.1,192.168.49.2
+I0303 15:30:44.170849  395980 cli_runner.go:164] Run: docker network inspect polar --format "{"Name": "{{.Name}}","Driver": "{{.Driver}}","Subnet": "{{range .IPAM.Config}}{{.Subnet}}{{end}}","Gateway": "{{range .IPAM.Config}}{{.Gateway}}{{end}}","MTU": {{if (index .Options "com.docker.network.driver.mtu")}}{{(index .Options "com.docker.network.driver.mtu")}}{{else}}0{{end}}, "ContainerIPs": [{{range $k,$v := .Containers }}"{{$v.IPv4Address}}",{{end}}]}"
+I0303 15:30:44.195402  395980 ssh_runner.go:194] Run: grep 192.168.49.1	host.minikube.internal$ /etc/hosts
+I0303 15:30:44.200375  395980 ssh_runner.go:194] Run: /bin/bash -c "{ grep -v $'\thost.minikube.internal$' "/etc/hosts"; echo "192.168.49.1	host.minikube.internal"; } > /tmp/h.$$; sudo cp /tmp/h.$$ "/etc/hosts""
+I0303 15:30:44.214377  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "8443/tcp") 0).HostPort}}'" polar
+I0303 15:30:44.239117  395980 kubeadm.go:883] updating cluster {Name:polar KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 Memory:4096 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.35.1 ClusterName:polar Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP:192.168.49.2 Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s MountString: Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false DisableCoreDNSLog:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s Rosetta:false} ...
+I0303 15:30:44.239301  395980 preload.go:187] Checking if preload exists for k8s version v1.35.1 and runtime docker
+I0303 15:30:44.239405  395980 ssh_runner.go:194] Run: docker images --format {{.Repository}}:{{.Tag}}
+I0303 15:30:44.262439  395980 docker.go:693] Got preloaded images: -- stdout --
+registry.k8s.io/kube-apiserver:v1.35.1
+registry.k8s.io/kube-controller-manager:v1.35.1
+registry.k8s.io/kube-scheduler:v1.35.1
+registry.k8s.io/kube-proxy:v1.35.1
+registry.k8s.io/etcd:3.6.6-0
+registry.k8s.io/coredns/coredns:v1.13.1
+registry.k8s.io/pause:3.10.1
+gcr.io/k8s-minikube/storage-provisioner:v5
+
+-- /stdout --
+I0303 15:30:44.262449  395980 docker.go:623] Images already preloaded, skipping extraction
+I0303 15:30:44.262556  395980 ssh_runner.go:194] Run: docker images --format {{.Repository}}:{{.Tag}}
+I0303 15:30:44.287751  395980 docker.go:693] Got preloaded images: -- stdout --
+registry.k8s.io/kube-apiserver:v1.35.1
+registry.k8s.io/kube-scheduler:v1.35.1
+registry.k8s.io/kube-proxy:v1.35.1
+registry.k8s.io/kube-controller-manager:v1.35.1
+registry.k8s.io/etcd:3.6.6-0
+registry.k8s.io/coredns/coredns:v1.13.1
+registry.k8s.io/pause:3.10.1
+gcr.io/k8s-minikube/storage-provisioner:v5
+
+-- /stdout --
+I0303 15:30:44.287763  395980 cache_images.go:85] Images are preloaded, skipping loading
+I0303 15:30:44.287771  395980 kubeadm.go:934] updating node { 192.168.49.2 8443 v1.35.1 docker true true} ...
+I0303 15:30:44.287913  395980 kubeadm.go:946] kubelet [Unit]
+Wants=docker.socket
+
+[Service]
+ExecStart=
+ExecStart=/var/lib/minikube/binaries/v1.35.1/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --config=/var/lib/kubelet/config.yaml --hostname-override=polar --kubeconfig=/etc/kubernetes/kubelet.conf --node-ip=192.168.49.2
+
+[Install]
+ config:
+{KubernetesVersion:v1.35.1 ClusterName:polar Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:}
+I0303 15:30:44.287990  395980 ssh_runner.go:194] Run: docker info --format {{.CgroupDriver}}
+I0303 15:30:44.368597  395980 cni.go:83] Creating CNI manager for ""
+I0303 15:30:44.368614  395980 cni.go:157] "docker" driver + "docker" container runtime found on kubernetes v1.24+, recommending bridge
+I0303 15:30:44.368626  395980 kubeadm.go:84] Using pod CIDR: 10.244.0.0/16
+I0303 15:30:44.368639  395980 kubeadm.go:196] kubeadm options: {CertDir:/var/lib/minikube/certs ServiceCIDR:10.96.0.0/12 PodSubnet:10.244.0.0/16 AdvertiseAddress:192.168.49.2 APIServerPort:8443 KubernetesVersion:v1.35.1 EtcdDataDir:/var/lib/minikube/etcd EtcdExtraArgs:map[] ClusterName:polar NodeName:polar DNSDomain:cluster.local CRISocket:/var/run/cri-dockerd.sock ImageRepository: ComponentOptions:[{Component:apiServer ExtraArgs:map[enable-admission-plugins:NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota] Pairs:map[certSANs:["127.0.0.1", "localhost", "192.168.49.2"]]} {Component:controllerManager ExtraArgs:map[allocate-node-cidrs:true leader-elect:false] Pairs:map[]} {Component:scheduler ExtraArgs:map[leader-elect:false] Pairs:map[]}] FeatureArgs:map[] NodeIP:192.168.49.2 CgroupDriver:systemd ClientCAFile:/var/lib/minikube/certs/ca.crt StaticPodPath:/etc/kubernetes/manifests ControlPlaneAddress:control-plane.minikube.internal KubeProxyOptions:map[] ResolvConfSearchRegression:false KubeletConfigOpts:map[containerRuntimeEndpoint:unix:///var/run/cri-dockerd.sock hairpinMode:hairpin-veth runtimeRequestTimeout:15m] PrependCriSocketUnix:true}
+I0303 15:30:44.368761  395980 kubeadm.go:202] kubeadm config:
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.49.2
+  bindPort: 8443
+bootstrapTokens:
+  - groups:
+      - system:bootstrappers:kubeadm:default-node-token
+    ttl: 24h0m0s
+    usages:
+      - signing
+      - authentication
+nodeRegistration:
+  criSocket: unix:///var/run/cri-dockerd.sock
+  name: "polar"
+  kubeletExtraArgs:
+    - name: "node-ip"
+      value: "192.168.49.2"
+  taints: []
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+apiServer:
+  certSANs: ["127.0.0.1", "localhost", "192.168.49.2"]
+  extraArgs:
+    - name: "enable-admission-plugins"
+      value: "NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota"
+controllerManager:
+  extraArgs:
+    - name: "allocate-node-cidrs"
+      value: "true"
+    - name: "leader-elect"
+      value: "false"
+scheduler:
+  extraArgs:
+    - name: "leader-elect"
+      value: "false"
+certificatesDir: /var/lib/minikube/certs
+clusterName: mk
+controlPlaneEndpoint: control-plane.minikube.internal:8443
+etcd:
+  local:
+    dataDir: /var/lib/minikube/etcd
+kubernetesVersion: v1.35.1
+networking:
+  dnsDomain: cluster.local
+  podSubnet: "10.244.0.0/16"
+  serviceSubnet: 10.96.0.0/12
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+authentication:
+  x509:
+    clientCAFile: /var/lib/minikube/certs/ca.crt
+cgroupDriver: systemd
+containerRuntimeEndpoint: unix:///var/run/cri-dockerd.sock
+hairpinMode: hairpin-veth
+runtimeRequestTimeout: 15m
+clusterDomain: "cluster.local"
+# disable disk resource management by default
+imageGCHighThresholdPercent: 100
+evictionHard:
+  nodefs.available: "0%"
+  nodefs.inodesFree: "0%"
+  imagefs.available: "0%"
+failSwapOn: false
+staticPodPath: /etc/kubernetes/manifests
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+clusterCIDR: "10.244.0.0/16"
+metricsBindAddress: 0.0.0.0:10249
+conntrack:
+  maxPerCore: 0
+# Skip setting "net.netfilter.nf_conntrack_tcp_timeout_established"
+  tcpEstablishedTimeout: 0s
+# Skip setting "net.netfilter.nf_conntrack_tcp_timeout_close"
+  tcpCloseWaitTimeout: 0s
+
+I0303 15:30:44.368835  395980 ssh_runner.go:194] Run: sudo ls /var/lib/minikube/binaries/v1.35.1
+I0303 15:30:44.380020  395980 binaries.go:50] Found k8s binaries, skipping transfer
+I0303 15:30:44.380111  395980 ssh_runner.go:194] Run: sudo mkdir -p /etc/systemd/system/kubelet.service.d /lib/systemd/system /var/tmp/minikube
+I0303 15:30:44.391361  395980 ssh_runner.go:361] scp memory --> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf (304 bytes)
+I0303 15:30:44.413389  395980 ssh_runner.go:361] scp memory --> /lib/systemd/system/kubelet.service (352 bytes)
+I0303 15:30:44.435116  395980 ssh_runner.go:361] scp memory --> /var/tmp/minikube/kubeadm.yaml.new (2205 bytes)
+I0303 15:30:44.456157  395980 ssh_runner.go:194] Run: grep 192.168.49.2	control-plane.minikube.internal$ /etc/hosts
+I0303 15:30:44.460800  395980 ssh_runner.go:194] Run: /bin/bash -c "{ grep -v $'\tcontrol-plane.minikube.internal$' "/etc/hosts"; echo "192.168.49.2	control-plane.minikube.internal"; } > /tmp/h.$$; sudo cp /tmp/h.$$ "/etc/hosts""
+I0303 15:30:44.474565  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:44.554670  395980 ssh_runner.go:194] Run: sudo systemctl start kubelet
+I0303 15:30:44.612324  395980 certs.go:67] Setting up /home/leland/.minikube/profiles/polar for IP: 192.168.49.2
+I0303 15:30:44.612347  395980 certs.go:193] generating shared ca certs ...
+I0303 15:30:44.612358  395980 certs.go:225] acquiring lock for ca certs: {Name:mk1d050cf80d17c4320e34d838bed5d09700a391 Timeout:1m0s Delay:500ms}
+I0303 15:30:44.612490  395980 certs.go:234] skipping valid "minikubeCA" ca cert: /home/leland/.minikube/ca.key
+I0303 15:30:44.612538  395980 certs.go:234] skipping valid "proxyClientCA" ca cert: /home/leland/.minikube/proxy-client-ca.key
+I0303 15:30:44.612550  395980 certs.go:255] generating profile certs ...
+I0303 15:30:44.612615  395980 certs.go:362] generating signed profile cert for "minikube-user": /home/leland/.minikube/profiles/polar/client.key
+I0303 15:30:44.612711  395980 crypto.go:70] Generating cert /home/leland/.minikube/profiles/polar/client.crt with IP's: []
+I0303 15:30:44.749749  395980 crypto.go:158] Writing cert to /home/leland/.minikube/profiles/polar/client.crt ...
+I0303 15:30:44.749769  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/client.crt: {Name:mk8aa226660ac51fe4f2d4ef62144b9122c1b5ed Timeout:1m0s Delay:500ms}
+I0303 15:30:44.749921  395980 crypto.go:166] Writing key to /home/leland/.minikube/profiles/polar/client.key ...
+I0303 15:30:44.749925  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/client.key: {Name:mk4a804a1abaebc85e725b5910675131e0173f16 Timeout:1m0s Delay:500ms}
+I0303 15:30:44.749992  395980 certs.go:362] generating signed profile cert for "minikube": /home/leland/.minikube/profiles/polar/apiserver.key.01e3659a
+I0303 15:30:44.750004  395980 crypto.go:70] Generating cert /home/leland/.minikube/profiles/polar/apiserver.crt.01e3659a with IP's: [10.96.0.1 127.0.0.1 10.0.0.1 192.168.49.2]
+I0303 15:30:44.933805  395980 crypto.go:158] Writing cert to /home/leland/.minikube/profiles/polar/apiserver.crt.01e3659a ...
+I0303 15:30:44.933820  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/apiserver.crt.01e3659a: {Name:mk7ee0acd4992b67a491534ba6cd884be3370432 Timeout:1m0s Delay:500ms}
+I0303 15:30:44.933967  395980 crypto.go:166] Writing key to /home/leland/.minikube/profiles/polar/apiserver.key.01e3659a ...
+I0303 15:30:44.933971  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/apiserver.key.01e3659a: {Name:mk669cdf4e01753f4ce755d3ed57cad1820ae009 Timeout:1m0s Delay:500ms}
+I0303 15:30:44.934032  395980 certs.go:380] copying /home/leland/.minikube/profiles/polar/apiserver.crt.01e3659a -> /home/leland/.minikube/profiles/polar/apiserver.crt
+I0303 15:30:44.934199  395980 certs.go:384] copying /home/leland/.minikube/profiles/polar/apiserver.key.01e3659a -> /home/leland/.minikube/profiles/polar/apiserver.key
+I0303 15:30:44.934269  395980 certs.go:362] generating signed profile cert for "aggregator": /home/leland/.minikube/profiles/polar/proxy-client.key
+I0303 15:30:44.934281  395980 crypto.go:70] Generating cert /home/leland/.minikube/profiles/polar/proxy-client.crt with IP's: []
+I0303 15:30:45.065099  395980 crypto.go:158] Writing cert to /home/leland/.minikube/profiles/polar/proxy-client.crt ...
+I0303 15:30:45.065114  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/proxy-client.crt: {Name:mk3ad3ee46a6700be49d570abdc20081e1ff81d7 Timeout:1m0s Delay:500ms}
+I0303 15:30:45.065244  395980 crypto.go:166] Writing key to /home/leland/.minikube/profiles/polar/proxy-client.key ...
+I0303 15:30:45.065248  395980 lock.go:61] WriteFile acquiring /home/leland/.minikube/profiles/polar/proxy-client.key: {Name:mk039b3bf1211be9b3826a958a09ca89b391c06a Timeout:1m0s Delay:500ms}
+I0303 15:30:45.065437  395980 certs.go:482] found cert: /home/leland/.minikube/certs/ca-key.pem (1675 bytes)
+I0303 15:30:45.065517  395980 certs.go:482] found cert: /home/leland/.minikube/certs/ca.pem (1078 bytes)
+I0303 15:30:45.065542  395980 certs.go:482] found cert: /home/leland/.minikube/certs/cert.pem (1123 bytes)
+I0303 15:30:45.065563  395980 certs.go:482] found cert: /home/leland/.minikube/certs/key.pem (1679 bytes)
+I0303 15:30:45.066107  395980 ssh_runner.go:361] scp /home/leland/.minikube/ca.crt --> /var/lib/minikube/certs/ca.crt (1111 bytes)
+I0303 15:30:45.097651  395980 ssh_runner.go:361] scp /home/leland/.minikube/ca.key --> /var/lib/minikube/certs/ca.key (1679 bytes)
+I0303 15:30:45.128436  395980 ssh_runner.go:361] scp /home/leland/.minikube/proxy-client-ca.crt --> /var/lib/minikube/certs/proxy-client-ca.crt (1119 bytes)
+I0303 15:30:45.159544  395980 ssh_runner.go:361] scp /home/leland/.minikube/proxy-client-ca.key --> /var/lib/minikube/certs/proxy-client-ca.key (1679 bytes)
+I0303 15:30:45.190828  395980 ssh_runner.go:361] scp /home/leland/.minikube/profiles/polar/apiserver.crt --> /var/lib/minikube/certs/apiserver.crt (1407 bytes)
+I0303 15:30:45.222221  395980 ssh_runner.go:361] scp /home/leland/.minikube/profiles/polar/apiserver.key --> /var/lib/minikube/certs/apiserver.key (1679 bytes)
+I0303 15:30:45.253349  395980 ssh_runner.go:361] scp /home/leland/.minikube/profiles/polar/proxy-client.crt --> /var/lib/minikube/certs/proxy-client.crt (1147 bytes)
+I0303 15:30:45.284684  395980 ssh_runner.go:361] scp /home/leland/.minikube/profiles/polar/proxy-client.key --> /var/lib/minikube/certs/proxy-client.key (1675 bytes)
+I0303 15:30:45.316182  395980 ssh_runner.go:361] scp /home/leland/.minikube/ca.crt --> /usr/share/ca-certificates/minikubeCA.pem (1111 bytes)
+I0303 15:30:45.347734  395980 ssh_runner.go:361] scp memory --> /var/lib/minikube/kubeconfig (722 bytes)
+I0303 15:30:45.369229  395980 ssh_runner.go:194] Run: openssl version
+I0303 15:30:45.376813  395980 ssh_runner.go:194] Run: sudo test -s /usr/share/ca-certificates/minikubeCA.pem
+I0303 15:30:45.387476  395980 ssh_runner.go:194] Run: sudo ln -fs /usr/share/ca-certificates/minikubeCA.pem /etc/ssl/certs/minikubeCA.pem
+I0303 15:30:45.398876  395980 ssh_runner.go:194] Run: ls -la /usr/share/ca-certificates/minikubeCA.pem
+I0303 15:30:45.404325  395980 certs.go:526] hashing: -rw-r--r-- 1 root root 1111 Feb 26 05:56 /usr/share/ca-certificates/minikubeCA.pem
+I0303 15:30:45.404451  395980 ssh_runner.go:194] Run: openssl x509 -hash -noout -in /usr/share/ca-certificates/minikubeCA.pem
+I0303 15:30:45.430743  395980 ssh_runner.go:194] Run: sudo test -L /etc/ssl/certs/b5213941.0
+I0303 15:30:45.441554  395980 ssh_runner.go:194] Run: sudo ln -fs /etc/ssl/certs/minikubeCA.pem /etc/ssl/certs/b5213941.0
+I0303 15:30:45.452085  395980 ssh_runner.go:194] Run: stat /var/lib/minikube/certs/apiserver-kubelet-client.crt
+I0303 15:30:45.456748  395980 certs.go:398] 'apiserver-kubelet-client' cert doesn't exist, likely first start: stat /var/lib/minikube/certs/apiserver-kubelet-client.crt: Process exited with status 1
+stdout:
+
+stderr:
+stat: cannot statx '/var/lib/minikube/certs/apiserver-kubelet-client.crt': No such file or directory
+I0303 15:30:45.456784  395980 kubeadm.go:400] StartCluster: {Name:polar KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.50@sha256:eb4fec00e8ad70adf8e6436f195cc429825ffb85f95afcdb5d8d9deb576f3e93 Memory:4096 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.35.1 ClusterName:polar Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP:192.168.49.2 Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s MountString: Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false DisableCoreDNSLog:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s Rosetta:false}
+I0303 15:30:45.456917  395980 ssh_runner.go:194] Run: docker ps --filter status=paused --filter=name=k8s_.*_(kube-system)_ --format={{.ID}}
+I0303 15:30:45.479906  395980 ssh_runner.go:194] Run: sudo ls /var/lib/kubelet/kubeadm-flags.env /var/lib/kubelet/config.yaml /var/lib/minikube/etcd
+I0303 15:30:45.490898  395980 ssh_runner.go:194] Run: sudo cp /var/tmp/minikube/kubeadm.yaml.new /var/tmp/minikube/kubeadm.yaml
+I0303 15:30:45.502381  395980 kubeadm.go:214] ignoring SystemVerification for kubeadm because of docker driver
+I0303 15:30:45.502471  395980 ssh_runner.go:194] Run: sudo ls -la /etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf
+I0303 15:30:45.512896  395980 kubeadm.go:155] config check failed, skipping stale config cleanup: sudo ls -la /etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf: Process exited with status 2
+stdout:
+
+stderr:
+ls: cannot access '/etc/kubernetes/admin.conf': No such file or directory
+ls: cannot access '/etc/kubernetes/kubelet.conf': No such file or directory
+ls: cannot access '/etc/kubernetes/controller-manager.conf': No such file or directory
+ls: cannot access '/etc/kubernetes/scheduler.conf': No such file or directory
+I0303 15:30:45.512905  395980 kubeadm.go:157] found existing configuration files:
+
+I0303 15:30:45.512965  395980 ssh_runner.go:194] Run: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/admin.conf
+I0303 15:30:45.523458  395980 kubeadm.go:163] "https://control-plane.minikube.internal:8443" may not be in /etc/kubernetes/admin.conf - will remove: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/admin.conf: Process exited with status 2
+stdout:
+
+stderr:
+grep: /etc/kubernetes/admin.conf: No such file or directory
+I0303 15:30:45.523523  395980 ssh_runner.go:194] Run: sudo rm -f /etc/kubernetes/admin.conf
+I0303 15:30:45.535033  395980 ssh_runner.go:194] Run: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/kubelet.conf
+I0303 15:30:45.546082  395980 kubeadm.go:163] "https://control-plane.minikube.internal:8443" may not be in /etc/kubernetes/kubelet.conf - will remove: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/kubelet.conf: Process exited with status 2
+stdout:
+
+stderr:
+grep: /etc/kubernetes/kubelet.conf: No such file or directory
+I0303 15:30:45.546142  395980 ssh_runner.go:194] Run: sudo rm -f /etc/kubernetes/kubelet.conf
+I0303 15:30:45.556878  395980 ssh_runner.go:194] Run: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/controller-manager.conf
+I0303 15:30:45.567071  395980 kubeadm.go:163] "https://control-plane.minikube.internal:8443" may not be in /etc/kubernetes/controller-manager.conf - will remove: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/controller-manager.conf: Process exited with status 2
+stdout:
+
+stderr:
+grep: /etc/kubernetes/controller-manager.conf: No such file or directory
+I0303 15:30:45.567146  395980 ssh_runner.go:194] Run: sudo rm -f /etc/kubernetes/controller-manager.conf
+I0303 15:30:45.578660  395980 ssh_runner.go:194] Run: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/scheduler.conf
+I0303 15:30:45.589717  395980 kubeadm.go:163] "https://control-plane.minikube.internal:8443" may not be in /etc/kubernetes/scheduler.conf - will remove: sudo grep https://control-plane.minikube.internal:8443 /etc/kubernetes/scheduler.conf: Process exited with status 2
+stdout:
+
+stderr:
+grep: /etc/kubernetes/scheduler.conf: No such file or directory
+I0303 15:30:45.589787  395980 ssh_runner.go:194] Run: sudo rm -f /etc/kubernetes/scheduler.conf
+I0303 15:30:45.599888  395980 ssh_runner.go:285] Start: sudo /bin/bash -c "env PATH="/var/lib/minikube/binaries/v1.35.1:$PATH" kubeadm init --config /var/tmp/minikube/kubeadm.yaml  --ignore-preflight-errors=DirAvailable--etc-kubernetes-manifests,DirAvailable--var-lib-minikube,DirAvailable--var-lib-minikube-etcd,FileAvailable--etc-kubernetes-manifests-kube-scheduler.yaml,FileAvailable--etc-kubernetes-manifests-kube-apiserver.yaml,FileAvailable--etc-kubernetes-manifests-kube-controller-manager.yaml,FileAvailable--etc-kubernetes-manifests-etcd.yaml,Port-10250,Swap,NumCPU,Mem,SystemVerification,FileContent--proc-sys-net-bridge-bridge-nf-call-iptables"
+I0303 15:30:45.638877  395980 kubeadm.go:318] [init] Using Kubernetes version: v1.35.1
+I0303 15:30:45.638910  395980 kubeadm.go:318] [preflight] Running pre-flight checks
+I0303 15:30:45.840243  395980 kubeadm.go:318] [preflight] Pulling images required for setting up a Kubernetes cluster
+I0303 15:30:45.840323  395980 kubeadm.go:318] [preflight] This might take a minute or two, depending on the speed of your internet connection
+I0303 15:30:45.840430  395980 kubeadm.go:318] [preflight] You can also perform this action beforehand using 'kubeadm config images pull'
+I0303 15:30:45.854284  395980 kubeadm.go:318] [certs] Using certificateDir folder "/var/lib/minikube/certs"
+I0303 15:30:45.857331  395980 out.go:252]     ▪ Generating certificates and keys ...
+I0303 15:30:45.857459  395980 kubeadm.go:318] [certs] Using existing ca certificate authority
+I0303 15:30:45.857511  395980 kubeadm.go:318] [certs] Using existing apiserver certificate and key on disk
+I0303 15:30:45.904300  395980 kubeadm.go:318] [certs] Generating "apiserver-kubelet-client" certificate and key
+I0303 15:30:46.047640  395980 kubeadm.go:318] [certs] Generating "front-proxy-ca" certificate and key
+I0303 15:30:46.111841  395980 kubeadm.go:318] [certs] Generating "front-proxy-client" certificate and key
+I0303 15:30:46.126091  395980 kubeadm.go:318] [certs] Generating "etcd/ca" certificate and key
+I0303 15:30:46.169861  395980 kubeadm.go:318] [certs] Generating "etcd/server" certificate and key
+I0303 15:30:46.169953  395980 kubeadm.go:318] [certs] etcd/server serving cert is signed for DNS names [localhost polar] and IPs [192.168.49.2 127.0.0.1 ::1]
+I0303 15:30:46.289097  395980 kubeadm.go:318] [certs] Generating "etcd/peer" certificate and key
+I0303 15:30:46.289213  395980 kubeadm.go:318] [certs] etcd/peer serving cert is signed for DNS names [localhost polar] and IPs [192.168.49.2 127.0.0.1 ::1]
+I0303 15:30:46.307261  395980 kubeadm.go:318] [certs] Generating "etcd/healthcheck-client" certificate and key
+I0303 15:30:46.400599  395980 kubeadm.go:318] [certs] Generating "apiserver-etcd-client" certificate and key
+I0303 15:30:46.505639  395980 kubeadm.go:318] [certs] Generating "sa" key and public key
+I0303 15:30:46.505808  395980 kubeadm.go:318] [kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+I0303 15:30:46.519296  395980 kubeadm.go:318] [kubeconfig] Writing "admin.conf" kubeconfig file
+I0303 15:30:46.555758  395980 kubeadm.go:318] [kubeconfig] Writing "super-admin.conf" kubeconfig file
+I0303 15:30:46.615478  395980 kubeadm.go:318] [kubeconfig] Writing "kubelet.conf" kubeconfig file
+I0303 15:30:46.703909  395980 kubeadm.go:318] [kubeconfig] Writing "controller-manager.conf" kubeconfig file
+I0303 15:30:46.715521  395980 kubeadm.go:318] [kubeconfig] Writing "scheduler.conf" kubeconfig file
+I0303 15:30:46.716352  395980 kubeadm.go:318] [etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+I0303 15:30:46.718316  395980 kubeadm.go:318] [control-plane] Using manifest folder "/etc/kubernetes/manifests"
+I0303 15:30:46.721554  395980 out.go:252]     ▪ Booting up control plane ...
+I0303 15:30:46.721691  395980 kubeadm.go:318] [control-plane] Creating static Pod manifest for "kube-apiserver"
+I0303 15:30:46.721796  395980 kubeadm.go:318] [control-plane] Creating static Pod manifest for "kube-controller-manager"
+I0303 15:30:46.721852  395980 kubeadm.go:318] [control-plane] Creating static Pod manifest for "kube-scheduler"
+I0303 15:30:46.762570  395980 kubeadm.go:318] [kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+I0303 15:30:46.763016  395980 kubeadm.go:318] [kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/instance-config.yaml"
+I0303 15:30:46.770313  395980 kubeadm.go:318] [patches] Applied patch of type "application/strategic-merge-patch+json" to target "kubeletconfiguration"
+I0303 15:30:46.770398  395980 kubeadm.go:318] [kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+I0303 15:30:46.770435  395980 kubeadm.go:318] [kubelet-start] Starting the kubelet
+I0303 15:30:46.893197  395980 kubeadm.go:318] [wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests"
+I0303 15:30:46.893299  395980 kubeadm.go:318] [kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+I0303 15:30:47.394815  395980 kubeadm.go:318] [kubelet-check] The kubelet is healthy after 501.795456ms
+I0303 15:30:47.396934  395980 kubeadm.go:318] [control-plane-check] Waiting for healthy control plane components. This can take up to 4m0s
+I0303 15:30:47.397081  395980 kubeadm.go:318] [control-plane-check] Checking kube-apiserver at https://192.168.49.2:8443/livez
+I0303 15:30:47.397143  395980 kubeadm.go:318] [control-plane-check] Checking kube-controller-manager at https://127.0.0.1:10257/healthz
+I0303 15:30:47.397214  395980 kubeadm.go:318] [control-plane-check] Checking kube-scheduler at https://127.0.0.1:10259/livez
+I0303 15:30:48.901320  395980 kubeadm.go:318] [control-plane-check] kube-controller-manager is healthy after 1.50421456s
+I0303 15:30:50.516680  395980 kubeadm.go:318] [control-plane-check] kube-scheduler is healthy after 3.119649287s
+I0303 15:30:52.398843  395980 kubeadm.go:318] [control-plane-check] kube-apiserver is healthy after 5.001831723s
+I0303 15:30:52.412375  395980 kubeadm.go:318] [upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+I0303 15:30:52.426052  395980 kubeadm.go:318] [kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
+I0303 15:30:52.438669  395980 kubeadm.go:318] [upload-certs] Skipping phase. Please see --upload-certs
+I0303 15:30:52.438796  395980 kubeadm.go:318] [mark-control-plane] Marking the node polar as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
+I0303 15:30:52.447284  395980 kubeadm.go:318] [bootstrap-token] Using token: rcw7fd.r0yg38kyabyu6rnm
+I0303 15:30:52.449971  395980 out.go:252]     ▪ Configuring RBAC rules ...
+I0303 15:30:52.450173  395980 kubeadm.go:318] [bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+I0303 15:30:52.453373  395980 kubeadm.go:318] [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+I0303 15:30:52.461470  395980 kubeadm.go:318] [bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+I0303 15:30:52.469230  395980 kubeadm.go:318] [bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+I0303 15:30:52.473336  395980 kubeadm.go:318] [bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+I0303 15:30:52.477170  395980 kubeadm.go:318] [bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+I0303 15:30:52.805775  395980 kubeadm.go:318] [kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+I0303 15:30:53.229801  395980 kubeadm.go:318] [addons] Applied essential addon: CoreDNS
+I0303 15:30:53.806943  395980 kubeadm.go:318] [addons] Applied essential addon: kube-proxy
+I0303 15:30:53.808943  395980 kubeadm.go:318] 
+I0303 15:30:53.809141  395980 kubeadm.go:318] Your Kubernetes control-plane has initialized successfully!
+I0303 15:30:53.809156  395980 kubeadm.go:318] 
+I0303 15:30:53.809239  395980 kubeadm.go:318] To start using your cluster, you need to run the following as a regular user:
+I0303 15:30:53.809245  395980 kubeadm.go:318] 
+I0303 15:30:53.809281  395980 kubeadm.go:318]   mkdir -p $HOME/.kube
+I0303 15:30:53.809338  395980 kubeadm.go:318]   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+I0303 15:30:53.809367  395980 kubeadm.go:318]   sudo chown $(id -u):$(id -g) $HOME/.kube/config
+I0303 15:30:53.809369  395980 kubeadm.go:318] 
+I0303 15:30:53.809413  395980 kubeadm.go:318] Alternatively, if you are the root user, you can run:
+I0303 15:30:53.809416  395980 kubeadm.go:318] 
+I0303 15:30:53.809458  395980 kubeadm.go:318]   export KUBECONFIG=/etc/kubernetes/admin.conf
+I0303 15:30:53.809462  395980 kubeadm.go:318] 
+I0303 15:30:53.809489  395980 kubeadm.go:318] You should now deploy a pod network to the cluster.
+I0303 15:30:53.809537  395980 kubeadm.go:318] Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+I0303 15:30:53.809589  395980 kubeadm.go:318]   https://kubernetes.io/docs/concepts/cluster-administration/addons/
+I0303 15:30:53.809614  395980 kubeadm.go:318] 
+I0303 15:30:53.809694  395980 kubeadm.go:318] You can now join any number of control-plane nodes by copying certificate authorities
+I0303 15:30:53.809754  395980 kubeadm.go:318] and service account keys on each node and then running the following as root:
+I0303 15:30:53.809758  395980 kubeadm.go:318] 
+I0303 15:30:53.809816  395980 kubeadm.go:318]   kubeadm join control-plane.minikube.internal:8443 --token rcw7fd.r0yg38kyabyu6rnm \
+I0303 15:30:53.809965  395980 kubeadm.go:318] 	--discovery-token-ca-cert-hash sha256:dbab4ee3c08b1ca08a2433183393d1a63710fc01f0b71f85cf5933950910e01f \
+I0303 15:30:53.810012  395980 kubeadm.go:318] 	--control-plane 
+I0303 15:30:53.810019  395980 kubeadm.go:318] 
+I0303 15:30:53.810115  395980 kubeadm.go:318] Then you can join any number of worker nodes by running the following on each as root:
+I0303 15:30:53.810130  395980 kubeadm.go:318] 
+I0303 15:30:53.810174  395980 kubeadm.go:318] kubeadm join control-plane.minikube.internal:8443 --token rcw7fd.r0yg38kyabyu6rnm \
+I0303 15:30:53.810250  395980 kubeadm.go:318] 	--discovery-token-ca-cert-hash sha256:dbab4ee3c08b1ca08a2433183393d1a63710fc01f0b71f85cf5933950910e01f 
+I0303 15:30:53.815385  395980 kubeadm.go:318] 	[WARNING Swap]: swap is supported for cgroup v2 only. The kubelet must be properly configured to use swap. Please refer to https://kubernetes.io/docs/concepts/architecture/nodes/#swap-memory, or disable swap on the node
+I0303 15:30:53.815519  395980 kubeadm.go:318] 	[WARNING Service-kubelet]: kubelet service is not enabled, please run 'systemctl enable kubelet.service'
+I0303 15:30:53.815537  395980 cni.go:83] Creating CNI manager for ""
+I0303 15:30:53.815548  395980 cni.go:157] "docker" driver + "docker" container runtime found on kubernetes v1.24+, recommending bridge
+I0303 15:30:53.818354  395980 out.go:179] 🔗  Configuring bridge CNI (Container Networking Interface) ...
+I0303 15:30:53.821073  395980 ssh_runner.go:194] Run: sudo mkdir -p /etc/cni/net.d
+I0303 15:30:53.834180  395980 ssh_runner.go:361] scp memory --> /etc/cni/net.d/1-k8s.conflist (496 bytes)
+I0303 15:30:53.855929  395980 ssh_runner.go:194] Run: /bin/bash -c "cat /proc/$(pgrep kube-apiserver)/oom_adj"
+I0303 15:30:53.856088  395980 ssh_runner.go:194] Run: sudo /var/lib/minikube/binaries/v1.35.1/kubectl create clusterrolebinding minikube-rbac --clusterrole=cluster-admin --serviceaccount=kube-system:default --kubeconfig=/var/lib/minikube/kubeconfig
+I0303 15:30:53.856372  395980 ssh_runner.go:194] Run: sudo /var/lib/minikube/binaries/v1.35.1/kubectl --kubeconfig=/var/lib/minikube/kubeconfig label --overwrite nodes polar minikube.k8s.io/updated_at=2026_03_03T15_30_53_0700 minikube.k8s.io/version=v1.38.1 minikube.k8s.io/commit=c93a4cb9311efc66b90d33ea03f75f2c4120e9b0 minikube.k8s.io/name=polar minikube.k8s.io/primary=true
+I0303 15:30:53.869359  395980 ops.go:34] apiserver oom_adj: -16
+I0303 15:30:53.922637  395980 kubeadm.go:1113] duration metric: took 66.598904ms to wait for elevateKubeSystemPrivileges
+I0303 15:30:53.963183  395980 kubeadm.go:402] duration metric: took 8.506394142s to StartCluster
+I0303 15:30:53.963212  395980 settings.go:141] acquiring lock: {Name:mkd08893cefdca4a506a40141170eecffa658fec Timeout:1m0s Delay:500ms}
+I0303 15:30:53.963265  395980 settings.go:149] Updating kubeconfig:  /home/leland/.kube/config
+I0303 15:30:53.964116  395980 lock.go:61] WriteFile acquiring /home/leland/.kube/config: {Name:mk538dac193fa2ee7a2239ac1bbc87bbb93487e2 Timeout:1m0s Delay:500ms}
+I0303 15:30:53.964395  395980 start.go:237] Will wait 6m0s for node &{Name: IP:192.168.49.2 Port:8443 KubernetesVersion:v1.35.1 ContainerRuntime:docker ControlPlane:true Worker:true}
+I0303 15:30:53.964526  395980 ssh_runner.go:194] Run: /bin/bash -c "sudo /var/lib/minikube/binaries/v1.35.1/kubectl --kubeconfig=/var/lib/minikube/kubeconfig -n kube-system get configmap coredns -o yaml"
+I0303 15:30:53.964560  395980 addons.go:528] enable addons start: toEnable=map[ambassador:false amd-gpu-device-plugin:false auto-pause:false cloud-spanner:false csi-hostpath-driver:false dashboard:false default-storageclass:true efk:false freshpod:false gcp-auth:false gvisor:false headlamp:false inaccel:false ingress:false ingress-dns:false inspektor-gadget:false istio:false istio-provisioner:false kong:false kubeflow:false kubetail:false kubevirt:false logviewer:false metallb:false metrics-server:false nvidia-device-plugin:false nvidia-driver-installer:false nvidia-gpu-device-plugin:false olm:false pod-security-policy:false portainer:false registry:false registry-aliases:false registry-creds:false storage-provisioner:true storage-provisioner-rancher:false volcano:false volumesnapshots:false yakd:false]
+I0303 15:30:53.964641  395980 config.go:183] Loaded profile config "polar": Driver=docker, ContainerRuntime=docker, KubernetesVersion=v1.35.1
+I0303 15:30:53.964649  395980 addons.go:71] Setting storage-provisioner=true in profile "polar"
+I0303 15:30:53.964669  395980 addons.go:240] Setting addon storage-provisioner=true in "polar"
+I0303 15:30:53.964688  395980 host.go:67] Checking if "polar" exists ...
+I0303 15:30:53.964755  395980 addons.go:71] Setting default-storageclass=true in profile "polar"
+I0303 15:30:53.964779  395980 addons_storage_classes.go:34] enableOrDisableStorageClasses default-storageclass=true on "polar"
+I0303 15:30:53.965119  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:53.965160  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:53.967386  395980 out.go:179] 🔎  Verifying Kubernetes components...
+I0303 15:30:53.970058  395980 ssh_runner.go:194] Run: sudo systemctl daemon-reload
+I0303 15:30:53.999099  395980 addons.go:240] Setting addon default-storageclass=true in "polar"
+I0303 15:30:53.999146  395980 host.go:67] Checking if "polar" exists ...
+I0303 15:30:53.999560  395980 cli_runner.go:164] Run: docker container inspect polar --format={{.State.Status}}
+I0303 15:30:54.003154  395980 out.go:179]     ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+I0303 15:30:54.009158  395980 addons.go:437] installing /etc/kubernetes/addons/storage-provisioner.yaml
+I0303 15:30:54.009174  395980 ssh_runner.go:361] scp memory --> /etc/kubernetes/addons/storage-provisioner.yaml (2676 bytes)
+I0303 15:30:54.009284  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:54.035035  395980 addons.go:437] installing /etc/kubernetes/addons/storageclass.yaml
+I0303 15:30:54.035052  395980 ssh_runner.go:361] scp storageclass/storageclass.yaml --> /etc/kubernetes/addons/storageclass.yaml (271 bytes)
+I0303 15:30:54.035144  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" polar
+I0303 15:30:54.052403  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:54.060898  395980 ssh_runner.go:194] Run: /bin/bash -c "sudo /var/lib/minikube/binaries/v1.35.1/kubectl --kubeconfig=/var/lib/minikube/kubeconfig -n kube-system get configmap coredns -o yaml | sed -e '/^        forward . \/etc\/resolv.conf.*/i \        hosts {\n           192.168.49.1 host.minikube.internal\n           fallthrough\n        }' -e '/^        errors *$/i \        log' | sudo /var/lib/minikube/binaries/v1.35.1/kubectl --kubeconfig=/var/lib/minikube/kubeconfig replace -f -"
+I0303 15:30:54.081214  395980 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:42455 SSHKeyPath:/home/leland/.minikube/machines/polar/id_rsa Username:docker}
+I0303 15:30:54.148705  395980 ssh_runner.go:194] Run: sudo systemctl start kubelet
+I0303 15:30:54.234682  395980 ssh_runner.go:194] Run: sudo KUBECONFIG=/var/lib/minikube/kubeconfig /var/lib/minikube/binaries/v1.35.1/kubectl apply -f /etc/kubernetes/addons/storage-provisioner.yaml
+I0303 15:30:54.245168  395980 start.go:995] {"host.minikube.internal": 192.168.49.1} host record injected into CoreDNS's ConfigMap
+I0303 15:30:54.245214  395980 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "8443/tcp") 0).HostPort}}'" polar
+I0303 15:30:54.271864  395980 ssh_runner.go:194] Run: sudo KUBECONFIG=/var/lib/minikube/kubeconfig /var/lib/minikube/binaries/v1.35.1/kubectl apply -f /etc/kubernetes/addons/storageclass.yaml
+I0303 15:30:54.280720  395980 api_server.go:51] waiting for apiserver process to appear ...
+I0303 15:30:54.280790  395980 ssh_runner.go:194] Run: sudo pgrep -xnf kube-apiserver.*minikube.*
+I0303 15:30:54.534244  395980 api_server.go:71] duration metric: took 569.82445ms to wait for apiserver process to appear ...
+I0303 15:30:54.534256  395980 api_server.go:87] waiting for apiserver healthz status ...
+I0303 15:30:54.534270  395980 api_server.go:298] Checking apiserver healthz at https://127.0.0.1:43709/healthz ...
+I0303 15:30:54.540044  395980 api_server.go:324] https://127.0.0.1:43709/healthz returned 200:
+ok
+I0303 15:30:54.541405  395980 api_server.go:140] control plane version: v1.35.1
+I0303 15:30:54.541422  395980 api_server.go:130] duration metric: took 7.161433ms to wait for apiserver health ...
+I0303 15:30:54.541449  395980 system_pods.go:42] waiting for kube-system pods to appear ...
+I0303 15:30:54.547110  395980 system_pods.go:58] 5 kube-system pods found
+I0303 15:30:54.547144  395980 system_pods.go:60] "etcd-polar" [9455ea25-7bce-4ac2-879e-b6246e905904] Running
+I0303 15:30:54.547151  395980 system_pods.go:60] "kube-apiserver-polar" [6c7accc1-75c1-4eda-bd00-d531993486f5] Running / Ready:ContainersNotReady (containers with unready status: [kube-apiserver]) / ContainersReady:ContainersNotReady (containers with unready status: [kube-apiserver])
+I0303 15:30:54.547154  395980 system_pods.go:60] "kube-controller-manager-polar" [25a5cf6b-7c34-415b-abf9-35b461bfef42] Running
+I0303 15:30:54.547160  395980 system_pods.go:60] "kube-scheduler-polar" [54864d09-c3ac-49b5-84f7-c2ba7dc43ade] Running / Ready:ContainersNotReady (containers with unready status: [kube-scheduler]) / ContainersReady:ContainersNotReady (containers with unready status: [kube-scheduler])
+I0303 15:30:54.547162  395980 system_pods.go:60] "storage-provisioner" [007fed7f-65cd-4300-92a9-eae79d7235b0] Pending
+I0303 15:30:54.547167  395980 system_pods.go:73] duration metric: took 5.713822ms to wait for pod list to return data ...
+I0303 15:30:54.547175  395980 kubeadm.go:586] duration metric: took 582.760559ms to wait for: map[apiserver:true system_pods:true]
+I0303 15:30:54.547200  395980 node_conditions.go:101] verifying NodePressure condition ...
+I0303 15:30:54.548907  395980 out.go:179] 🌟  Enabled addons: storage-provisioner, default-storageclass
+I0303 15:30:54.550490  395980 node_conditions.go:121] node storage ephemeral capacity is 1055762868Ki
+I0303 15:30:54.550503  395980 node_conditions.go:122] node cpu capacity is 16
+I0303 15:30:54.550513  395980 node_conditions.go:104] duration metric: took 3.310493ms to run NodePressure ...
+I0303 15:30:54.550535  395980 start.go:243] waiting for startup goroutines ...
+I0303 15:30:54.551526  395980 addons.go:531] duration metric: took 587.01388ms for enable addons: enabled=[storage-provisioner default-storageclass]
+I0303 15:30:54.751590  395980 kapi.go:214] "coredns" deployment in "kube-system" namespace and "polar" context rescaled to 1 replicas
+I0303 15:30:54.751623  395980 start.go:248] waiting for cluster config update ...
+I0303 15:30:54.751632  395980 start.go:257] writing updated cluster config ...
+I0303 15:30:54.751911  395980 ssh_runner.go:194] Run: rm -f paused
+I0303 15:30:54.801993  395980 start.go:632] kubectl: 1.34.1, cluster: 1.35.1 (minor skew: 1)
+I0303 15:30:54.804577  395980 out.go:179] 🏄  Done! kubectl is now configured to use "polar" cluster and "default" namespace by default
+
+

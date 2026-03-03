@@ -11,11 +11,10 @@ sourceCompatibility = '17'
 
 description = 'Provides functionality for managing the books in the catalog.'
 
-def ghcrOwner = (project.findProperty('ghcrOwner') ?: System.getenv('GITHUB_REPOSITORY_OWNER') ?: 'CHANGE_ME').toString().toLowerCase()
-def ghcrUsername = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME") ?: System.getenv("GITHUB_ACTOR")
-def ghcrToken = project.findProperty("ghcrToken") ?: System.getenv("GHCR_TOKEN") ?: System.getenv("GITHUB_TOKEN")
-def debugEnabled = (project.findProperty("debug") ?: "false").toString().toBoolean()
-
+def ghcrOwner = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
+def ghcrUsername = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
+def ghcrToken = project.findProperty("ghcrToken") ?: System.getenv("GHCR_TOKEN");
+def debugEnabled = project.findProperty("DEBUG") ?: false
 
 jib {
 	from {
