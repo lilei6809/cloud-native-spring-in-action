@@ -28,13 +28,15 @@ jobs:
           cache: gradle
       - name: Build, unit tests and integration tests
         run: |
+          cd Chapter07/07-begin/catalog-service
           chmod +x gradlew
           ./gradlew build
+
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
         with:
-          path: "${{ github.workspace }}"
+          path: "${{ github.workspace }}/Chapter07/07-begin/catalog-service"
           fail-build: false
           severity-cutoff: high
       - name: Upload vulnerability report
@@ -42,6 +44,7 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
+
       - name: Install arkade and kubeconform
         run: |
           curl -sLS https://get.arkade.dev | sudo sh
@@ -71,6 +74,7 @@ jobs:
           cache: gradle
       - name: Build container image
         run: |
+          cd Chapter07/07-begin/catalog-service
           chmod +x gradlew
           ./gradlew bootBuildImage \
             --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
