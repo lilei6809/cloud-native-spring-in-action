@@ -50,7 +50,6 @@ configurations {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 }
 

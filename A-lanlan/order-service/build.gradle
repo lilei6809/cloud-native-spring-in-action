@@ -50,7 +50,6 @@ configurations {
 }
 
 repositories {
-    mavenLocal()  // common组件依赖
     mavenCentral()
 }
 

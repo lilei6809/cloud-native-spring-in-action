@@ -39,7 +39,6 @@ jib {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 

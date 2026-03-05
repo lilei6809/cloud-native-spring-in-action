@@ -1,1 +1,4 @@
 rootProject.name = 'order-service'
+
+// Resolve com.polarbookshop:common-* from local source in CI/local monorepo builds.
+includeBuild('../common')
