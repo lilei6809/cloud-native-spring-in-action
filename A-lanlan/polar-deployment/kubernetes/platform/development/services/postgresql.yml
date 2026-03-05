@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    db: polar-postgres
+data:
+  init.sql: |
+    CREATE DATABASE polardb_catalog;
+    CREATE DATABASE polardb_order;
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

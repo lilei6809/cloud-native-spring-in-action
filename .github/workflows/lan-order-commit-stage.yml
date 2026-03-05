@@ -1,4 +1,4 @@
-name: order Commit Stage
+name: Order Commit Stage
 on:
   push:
     paths:
