@@ -1,0 +1,96 @@
+plugins {
+	id 'org.springframework.boot' version '3.4.13'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'java'
+	id 'com.google.cloud.tools.jib' version '3.4.3'
+}
+
+group = 'com.polarbookshop'
+version = '0.0.1-SNAPSHOT'
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+}
+
+description = 'Provides functionality for managing the books in the catalog.'
+
+def ghcrOwner = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
+def ghcrUsername = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
+def ghcrToken = project.findProperty("ghcrToken") ?: System.getenv("GHCR_TOKEN");
+def debugEnabled = project.findProperty("DEBUG") ?: false
+
+jib {
+	from {
+		image = 'eclipse-temurin:17-jre'
+	}
+	to {
+		// Default target: ghcr.io/<owner>/catalog-service:0.0.1-SNAPSHOT
+		image = project.findProperty("imageName") ?: "ghcr.io/${ghcrOwner}/${project.name}:${project.version}"
+		if (ghcrUsername && ghcrToken) {
+			auth {
+				username = ghcrUsername
+				password = ghcrToken
+			}
+		}
+	}
+	container {
+		user = '1000:1000'
+		ports = debugEnabled ? ['9001', '5005'] : ['9001']
+		if (debugEnabled) {
+			jvmFlags = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005']
+		}
+		creationTime = 'USE_CURRENT_TIMESTAMP'
+	}
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2024.0.3")
+}
+
+dependencies {
+
+	implementation 'com.polarbookshop:common-core:0.0.1-SNAPSHOT' // 必需：异常模型/Result
+	implementation 'com.polarbookshop:common-web:0.0.1-SNAPSHOT'  // 可选：全局异常处理自动生效
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.retry:spring-retry'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+//	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.testcontainers:postgresql'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+bootRun {
+	systemProperty 'spring.profiles.active', 'testdata'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

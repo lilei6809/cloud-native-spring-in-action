@@ -50,6 +50,7 @@ configurations {
 }
 
 repositories {
+    mavenLocal()  // common组件依赖
     mavenCentral()
 }
 
@@ -58,6 +59,11 @@ ext {
 }
 
 dependencies {
+
+    implementation 'com.polarbookshop:common-core:0.0.1-SNAPSHOT' // 必需：异常模型/Result
+    implementation 'com.polarbookshop:common-web:0.0.1-SNAPSHOT'  // 可选：全局异常处理自动生效
+
+
     // Source: https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("io.github.openfeign:feign-okhttp")

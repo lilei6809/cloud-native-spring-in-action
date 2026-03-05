@@ -275,7 +275,7 @@ Environment="NO_PROXY=localhost,127.0.0.1,192.168.49.2"
 #  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
 
 # NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
-# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
+# container runtimes. If left unlimited, it may resultBox in OOM issues with MySQL.
 ExecStart=
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 \
 	-H fd:// --containerd=/run/containerd/containerd.sock \
@@ -333,7 +333,7 @@ Environment=NO_PROXY=localhost,127.0.0.1,192.168.49.2
 #  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
 
 # NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
-# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
+# container runtimes. If left unlimited, it may resultBox in OOM issues with MySQL.
 ExecStart=
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 	-H fd:// --containerd=/run/containerd/containerd.sock 	-H unix:///var/run/docker.sock 	--default-ulimit=nofile=1048576:1048576 	--tlsverify 	--tlscacert /etc/docker/ca.pem 	--tlscert /etc/docker/server.pem 	--tlskey /etc/docker/server-key.pem --label provider=docker --insecure-registry 10.96.0.0/12 
 ExecReload=/bin/kill -s HUP $MAINPID
@@ -391,7 +391,7 @@ I0303 15:30:38.640408  395980 main.go:144] libmachine: SSH cmd err, output: <nil
 +#  Service has more than one ExecStart= setting, which is only allowed for Type=oneshot services.
 +
 +# NOTE: default-ulimit=nofile is set to an arbitrary number for consistency with other
-+# container runtimes. If left unlimited, it may result in OOM issues with MySQL.
++# container runtimes. If left unlimited, it may resultBox in OOM issues with MySQL.
 +ExecStart=
 +ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 	-H fd:// --containerd=/run/containerd/containerd.sock 	-H unix:///var/run/docker.sock 	--default-ulimit=nofile=1048576:1048576 	--tlsverify 	--tlscacert /etc/docker/ca.pem 	--tlscert /etc/docker/server.pem 	--tlskey /etc/docker/server-key.pem --label provider=docker --insecure-registry 10.96.0.0/12 
 +ExecReload=/bin/kill -s HUP $MAINPID
