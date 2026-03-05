@@ -39,6 +39,7 @@ public class OrderController {
     // 测试接口
     @GetMapping("longRequest")
     public ResponseEntity<ResultBox<String>> longRequest(){
+        int i = 0;
         return ResponseEntity.ok(ResultBox.success(orderService.getLongRequest()));
     }
 
