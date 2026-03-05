@@ -1,4 +1,3 @@
-version: "3.8"
 services:
 
   # Applications
@@ -13,10 +12,10 @@ services:
       - 8001:8001
     environment:
       # Buildpacks environment variable to configure the number of threads in memory calculation
-      - BPL_JVM_THREAD_COUNT=50
-      # Buildpacks environment variable to enable debug through a socket on port 8001
-      - BPL_DEBUG_ENABLED=true
-      - BPL_DEBUG_PORT=8001
+#      - BPL_JVM_THREAD_COUNT=50
+#      # Buildpacks environment variable to enable debug through a socket on port 8001
+#      - BPL_DEBUG_ENABLED=true
+#      - BPL_DEBUG_PORT=8001
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog
       - SPRING_PROFILES_ACTIVE=testdata
@@ -27,21 +26,22 @@ services:
     ports:
       - 8888:8888
       - 9888:9888
-    environment:
-      # Buildpacks environment variable to configure the number of threads in memory calculation
-      - BPL_JVM_THREAD_COUNT=50
-      # Buildpacks environment variable to enable debug through a socket on port 9888
-      - BPL_DEBUG_ENABLED=true
-      - BPL_DEBUG_PORT=9888
+#    environment:
+#      # Buildpacks environment variable to configure the number of threads in memory calculation
+#      - BPL_JVM_THREAD_COUNT=50
+#      # Buildpacks environment variable to enable debug through a socket on port 9888
+#      - BPL_DEBUG_ENABLED=true
+#      - BPL_DEBUG_PORT=9888
 
   # Backing Services
 
   polar-postgres:
-    image: "postgres:14.12"
+    image: "postgres:14.4"
     container_name: "polar-postgres"
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=polardb_catalog
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql

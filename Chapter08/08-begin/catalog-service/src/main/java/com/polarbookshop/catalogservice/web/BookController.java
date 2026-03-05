@@ -6,6 +6,7 @@ import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookService;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,18 @@ public class BookController {
     @PutMapping("{isbn}")
     public Book put(@PathVariable String isbn, @Valid @RequestBody Book book) {
         return bookService.editBookDetails(isbn, book);
+    }
+
+    // 测试用的接口
+    @GetMapping("/longReadTimeOut")
+    public ResponseEntity<String> longReadTimeOut() {
+        try {
+            Thread.sleep(3000);
+            return ResponseEntity.ok().body("回信~~~~~~");
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

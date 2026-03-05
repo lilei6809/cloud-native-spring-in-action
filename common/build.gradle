@@ -1,0 +1,15 @@
+
+
+group = 'com.polarbookshop'
+version = '0.0.1-SNAPSHOT'
+description = 'common'
+
+// IDE (especially with Kotlin tooling enabled) may request this task even in pure Java projects.
+allprojects {
+    if (tasks.findByName('prepareKotlinBuildScriptModel') == null) {
+        tasks.register('prepareKotlinBuildScriptModel') {
+            group = 'ide'
+            description = 'No-op compatibility task for IDE Gradle import.'
+        }
+    }
+}

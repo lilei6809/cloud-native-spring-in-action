@@ -1,0 +1,73 @@
+server:
+  port: 9002
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 15s
+
+spring:
+  application:
+    name: order-service
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://localhost:8888
+      request-connect-timeout: 5000 # 5s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false # In production, set to true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
+
+    openfeign:
+      okhttp:
+        enabled: true  # 使用 okhttp 连接池
+      httpclient:
+        max-connections: 20  # 连接池最大连接数（视业务并发而定）
+        max-connections-per-route: 10   # 每个下游路由的最大连接数
+
+      client:
+        config:
+          default: # 全局默认配置
+            connect-timeout: 2000
+            read-timeout: 1000
+          catalogClient: # 特定 Client 的配置
+            read-timeout: 1000
+            logger-level: full
+          CatalogLongRequestClient:
+            read-timeout: 4000
+            logger-level: full
+
+
+  datasource:
+    username: user
+    password: password
+    url: jdbc:postgresql://localhost:5432/polardb_order
+    hikari:
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 5
+
+polar:
+  catalog-service-uri: "http://localhost:9001"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+
+logging:
+  level:
+    web: INFO
+    com:
+      polarbookshop:
+        orderservice:
+          config: debug
