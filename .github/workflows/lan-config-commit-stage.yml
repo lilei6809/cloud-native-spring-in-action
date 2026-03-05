@@ -1,4 +1,4 @@
-name: Chapter07 Catalog Commit Stage
+name: Catalog Commit Stage
 on:
   push:
     paths:
