@@ -1,11 +1,13 @@
 package com.polarbookshop.orderservice.domain;
 
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.time.Instant;
 
@@ -22,6 +24,7 @@ public record Order(
 
         Double bookPrice,
 
+        @Min(value = 0, message = "数量必须大于 0")
         Integer quantity,
 
         OrderStatus status,
