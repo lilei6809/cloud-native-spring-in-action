@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("order")
+@RequestMapping("orders")
 @Slf4j
 public class OrderController {
     private OrderService orderService;
@@ -39,7 +39,6 @@ public class OrderController {
     // 测试接口
     @GetMapping("longRequest")
     public ResponseEntity<ResultBox<String>> longRequest(){
-        int i = 0;
         return ResponseEntity.ok(ResultBox.success(orderService.getLongRequest()));
     }
 

@@ -6,7 +6,9 @@ import com.polarbookshop.commoncore.exception.SystemException;
 import com.polarbookshop.orderservice.config.CatalogClient;
 import com.polarbookshop.orderservice.config.CatalogLongRequestClient;
 import com.polarbookshop.orderservice.model.Book;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Slf4j
 public class OrderService {
 
     private final OrderRepository repo;
@@ -33,11 +36,15 @@ public class OrderService {
 
     public Order submitOrder(String isbn, Integer quantity){
 
-        ResultBox<Book> bookRes = catalogClient.getBookByIsbn(isbn);
+        ResponseEntity<ResultBox<Book>> response = catalogClient.getBookByIsbn(isbn);
+        log.info(response.toString());
 
-        Book book = bookRes.getData();
+        ResultBox<Book> box = response.getBody();
+        log.info("===============Box received:  {}", box.toString());
+        Book book = box.getData();
 
-        if(book == null){
+
+        if (book == null) {
             Order order = buildRejectedOrder(isbn, quantity);
             repo.save(order);
             throw new BusinessException("The book with ISBN " + isbn + " was not found.", "A0404");
@@ -62,11 +69,11 @@ public class OrderService {
     @Autowired
     CatalogLongRequestClient c;
     // 测试用
-    public String getLongRequest(){
+    public String getLongRequest() {
         ResultBox<String> box = c.longReadTimeOut();
         if (box.isSuccess()) {
             return box.getData();
-        }  else {
+        } else {
             throw new SystemException(box.getMessage(), box.getCode());
         }
     }

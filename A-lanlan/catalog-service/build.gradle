@@ -20,7 +20,7 @@ def debugEnabled = project.findProperty("DEBUG") ?: false
 
 jib {
 	from {
-		image = 'eclipse-temurin:17-jre'
+		image = 'eclipse-temurin:21-jre'
 	}
 	to {
 		// Default target: ghcr.io/<owner>/catalog-service:0.0.1-SNAPSHOT

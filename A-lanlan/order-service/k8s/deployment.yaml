@@ -34,7 +34,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: testdata
             - name: POLAR_CATALOG-SERVICE-URI
-              value: http://catalog-service:9001
+              value: http://catalog-service
 
 ---
 

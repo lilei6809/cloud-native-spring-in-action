@@ -1,6 +1,6 @@
 custom_build(
     # container name
-    ref='config-service',
+    ref='order-service',
     # command to build image
     command='./gradlew jibDockerBuild -PimageName=$EXPECTED_REF',
     # Files to watch that trigger a new build
@@ -18,7 +18,7 @@ k8s_yaml(['k8s/deployment.yaml'])
 
 # Manage
 k8s_resource(
-    'config-service',
-    port_forwards=['8888:8888'],
+    'order-service',
+    port_forwards=['9002:9002'],
     trigger_mode=TRIGGER_MODE_MANUAL
 )
