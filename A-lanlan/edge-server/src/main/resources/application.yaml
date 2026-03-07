@@ -1,0 +1,22 @@
+server:
+  shutdown: graceful
+  port: 9000
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 10s # 当 TCP connection 建立后 10s 内无数据, 则关闭
+
+
+spring:
+  application:
+    name: edge-server
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  cloud:
+    gateway:
+      routes:
+        - id: order_route
+          uri: lb://order-service      # 转发给注册中心里的 order-service
+          predicates:
+            - Path=/api/order/**       # 断言：只要路径以 /api/order/ 开头，就命中这条路由
+
+
