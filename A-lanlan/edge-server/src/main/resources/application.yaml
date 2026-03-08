@@ -5,7 +5,8 @@ server:
     connection-timeout: 2s
     idle-timeout: 10s # 当 TCP connection 建立后 10s 内无数据, 则关闭
 
-
+polar:
+  greeting: "greeting from local config"
 spring:
   application:
     name: edge-server
@@ -88,11 +89,10 @@ spring:
 
 
 
-
   data:
     redis:
       connect-timeout: 1s
-      host: ${DATA_REDIS_HOST:localhost}
+      host: localhost
       port: 6379
       timeout: 1s  # response timeout
 

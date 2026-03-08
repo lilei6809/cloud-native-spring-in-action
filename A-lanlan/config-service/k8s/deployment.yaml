@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: config-service
-          image: config-service
+          image: ghcr.io/lilei6809/config-service:0.0.1-SNAPSHOT
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

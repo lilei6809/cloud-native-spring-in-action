@@ -9,6 +9,7 @@ group = 'com.polarbookshop'
 version = '0.0.1-SNAPSHOT'
 description = 'edge-server'
 
+def imageTag = project.findProperty("imageTag") ?: System.getenv("IMAGE_TAG") ?: project.version
 def ghcrOwner = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
 def ghcrUsername = project.findProperty("ghcrUsername") ?: System.getenv("GH_USERNAME")
 def ghcrToken = project.findProperty("ghcrToken") ?: System.getenv("GHCR_TOKEN");
