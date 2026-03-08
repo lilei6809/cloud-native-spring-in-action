@@ -11,12 +11,105 @@ spring:
     name: edge-server
   lifecycle:
     timeout-per-shutdown-phase: 15s
+  config:
+    import: "optional:configserver:"
   cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}
+      request-connect-timeout: 5000 # 5s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false # In production, set to true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
     gateway:
-      routes:
-        - id: order_route
-          uri: lb://order-service      # 转发给注册中心里的 order-service
-          predicates:
-            - Path=/api/order/**       # 断言：只要路径以 /api/order/ 开头，就命中这条路由
+      server:
+        webflux:
+          routes:
+            - id: catalog-service
+              uri: ${CATALOG_SERVICE_URL:http://localhost:9001}/books
+              predicates:
+                - Path=/books/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: catalogCircuitBreaker
+                    fallbackUri: forward:/catalog-fallback
+            - id: order-service
+              uri:
+                ${ORDER_SERVICE_URL:http://localhost:9002}/orders
+              predicates:
+                - Path=/orders/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: orderCircuitBreaker
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 2000
+            pool:
+              type: elastic
+              max-idle-time: 15s
+              max-life-time: 60s # 连接，最长只复用 60 秒。到了这个时间，即使连接还没坏、也不是空闲状态，连接池也会把它淘汰，后面再建新连接。
+          default-filters: # 应用到全局的 filter
+            - name: Retry
+              args:
+                retries: 3
+                methods: GET
+                series: SERVER_ERROR
+                exceptions:
+                  - java.io.IOException
+                  - java.util.concurrent.TimeoutException
+                backoff:
+                  firstBackOff: 50ms
+                  maxBackOff: 500ms
+                  factor: 2
+                  basedOnPreviousValue: false
+                jitter:
+                  randomFactor: 0.5
+
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter:
+                  requestedTokens: 1
+                  burstCapacity: 20
+                  replenishRate: 10
+
+  data:
+    redis:
+      connect-timeout: 1s
+      host: localhost
+      port: 6379
+      timeout: 1s  # response timeout
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 20
+        permitted-number-of-calls-in-half-open-state: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state:
+          seconds: 15
+  timelimiter:
+    configs:
+      default:
+        timeout-duration:
+          seconds: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+logging:
+  level:
+    io.github.resilience4j: DEBUG
+
+
+
+
 
 

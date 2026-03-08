@@ -98,3 +98,6 @@ out/
 * text=auto eol=lf
 *.sh text eol=lf
 gradlew text eol=lf
+
+# env
+.env

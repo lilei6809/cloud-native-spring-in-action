@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -63,7 +62,7 @@ public class BookController {
     @GetMapping("/longReadTimeOut")
     public ResponseEntity<ResultBox<String>> longReadTimeOut() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
             return ResponseEntity.ok().body(ResultBox.success("回信~~~~~~"));
 
         } catch (InterruptedException e) {
