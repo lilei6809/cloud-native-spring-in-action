@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-server
+  labels:
+    app: edge-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-server
+  template:
+    metadata:
+      labels:
+        app: edge-server
+    spec:
+      containers:
+        - name: edge-server
+          image: ghcr.io/lilei6809/edge-server:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9000
+          env:
+            #            - name: BPL_JVM_THREAD_COUNT
+            #              value: "50"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+            - name: CATALOG_SERVICE_URL
+              value: http://catalog-service
+            - name: ORDER_SERVICE_URL
+              value: http://order_service
+            - name: DATA_REDIS_HOST
+              value: http://polar-redis
+
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-server
+  labels:
+    app: edge-server
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9000
