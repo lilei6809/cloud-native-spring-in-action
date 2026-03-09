@@ -32,8 +32,18 @@ jib {
     container {
         user = '1000:1000'
         ports = debugEnabled ? ['9000', '5005'] : ['9000']
+//        opentelemetry 启动参数配置
+        jvmFlags = [
+                '-javaagent:/otel/opentelemetry-javaagent.jar', // agent所在路径
+                    '-Dotel.service.name=edge-server',
+                    '-Dotel.exporter.otlp.endpoint=http://jaeger:4318'
+        ]
         if (debugEnabled) {
-            jvmFlags = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005']
+            jvmFlags += ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005']
+        }
+
+        extraDirectories {
+            paths = ['src/main/jib']
         }
         creationTime = 'USE_CURRENT_TIMESTAMP'
     }
@@ -69,6 +79,14 @@ dependencies {
 
     implementation 'com.polarbookshop:common-core:0.0.1-SNAPSHOT' // 必需：异常模型/Result
     implementation 'com.polarbookshop:common-web:0.0.1-SNAPSHOT'  // 可选：全局异常处理自动生效
+
+    // Lombok dependencies
+    compileOnly 'org.projectlombok:lombok:1.18.30' // Use the current version
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Add corresponding dependencies for testing if needed
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 dependencyManagement {

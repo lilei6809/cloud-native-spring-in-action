@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: edge-server
-          image: edge-server-3:latest
+          image: edge-server-5:latest
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -34,7 +34,7 @@ spec:
             - name: CATALOG_SERVICE_URL
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
-              value: http://order_service
+              value: http://order-service
             - name: DATA_REDIS_HOST
               value: polar-redis
 

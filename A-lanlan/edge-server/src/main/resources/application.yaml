@@ -13,6 +13,8 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:
+    # 注意: github 上的配置不能带 config 部分, 下面的 cloud.config 也是. 因为配置加载到这儿, springboot 就知道要去找 config-service 要配置
+    # 但是如果 github 上的配置中仍然事 让去 config-service 要配置, 就无限递归了
     import: "optional:configserver:"
   cloud:
     config:
@@ -25,6 +27,7 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
+        useRandomPolicy: true # 配置为 true, 重试时增加随机 jitter, 防止发生惊群效应
     gateway:
       server:
         webflux:
@@ -34,10 +37,10 @@ spring:
               predicates:
                 - Path=/books/**
               filters:
-                - name: CircuitBreaker
+                - name: CircuitBreaker  #  Spring Cloud Gateway 在启动时会从容器里找名为 CircuitBreaker 的 GatewayFilterFactory
                   args:
-                    name: catalogCircuitBreaker
-                    fallbackUri: forward:/catalog-fallback
+                    name: catalogCircuitBreaker # 熔断器实例的名字
+                    fallbackUri: forward:/catalog-fallback # 触发熔断后, 回调转发到 /catalog-fallback
             - id: order-service
               uri:
                 ${ORDER_SERVICE_URL:http://localhost:9002}/orders
@@ -119,6 +122,10 @@ management:
 logging:
   level:
     io.github.resilience4j: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread][traceId: %X{trace_id}, spanId: %X{span_id}] %-5level %logger{36} - %msg%n"
+
+
 
 
 
