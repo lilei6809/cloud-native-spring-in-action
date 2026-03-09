@@ -101,3 +101,6 @@ gradlew text eol=lf
 
 # env
 .env
+
+# ai agent docs
+docs
