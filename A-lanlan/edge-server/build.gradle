@@ -33,18 +33,11 @@ jib {
         user = '1000:1000'
         ports = debugEnabled ? ['9000', '5005'] : ['9000']
 //        opentelemetry 启动参数配置
-        jvmFlags = [
-                '-javaagent:/otel/opentelemetry-javaagent.jar', // agent所在路径
-                    '-Dotel.service.name=edge-server',
-                    '-Dotel.exporter.otlp.endpoint=http://jaeger:4318'
-        ]
+
         if (debugEnabled) {
             jvmFlags += ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005']
         }
 
-        extraDirectories {
-            paths = ['src/main/jib']
-        }
         creationTime = 'USE_CURRENT_TIMESTAMP'
     }
 }
