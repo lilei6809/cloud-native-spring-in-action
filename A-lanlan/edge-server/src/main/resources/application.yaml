@@ -48,6 +48,12 @@ spring:
                   args:
                     name: catalogCircuitBreaker # 熔断器实例的名字
                     fallbackUri: forward:/catalog-fallback # 触发熔断后, 回调转发到 /catalog-fallback
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@userKeyResolver}"
+                    redis-rate-limiter.requestedTokens: 1
+                    redis-rate-limiter.burstCapacity: 20
+                    redis-rate-limiter.replenishRate: 10
             - id: order-service
               uri:
                 ${ORDER_SERVICE_URL:http://localhost:9002}/orders
@@ -57,6 +63,14 @@ spring:
                 - name: CircuitBreaker
                   args:
                     name: orderCircuitBreaker
+                # 因为 order 需要远程调用, 还需要查 database, 所以 rate limit 保守一些
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@userKeyResolver}"
+                    redis-rate-limiter.requestedTokens: 1
+                    redis-rate-limiter.burstCapacity: 5
+                    redis-rate-limiter.replenishRate: 2
+
           httpclient:
             connect-timeout: 2000
             response-timeout: 2000
@@ -81,12 +95,7 @@ spring:
                 jitter:
                   randomFactor: 0.5
 
-            - name: RequestRateLimiter
-              args:
-                key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter.requestedTokens: 1
-                redis-rate-limiter.burstCapacity: 20
-                redis-rate-limiter.replenishRate: 10
+
 
             - name: SaveSession
   session:
