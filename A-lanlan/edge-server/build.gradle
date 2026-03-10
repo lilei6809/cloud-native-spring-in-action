@@ -62,6 +62,8 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+
+
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -80,6 +82,7 @@ dependencies {
     // Add corresponding dependencies for testing if needed
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
 }
 
 dependencyManagement {

@@ -7,6 +7,13 @@ server:
 
 polar:
   greeting: "greeting from local config"
+  gateway:
+    rate-limiter:
+      local-fallback-enabled: true
+      entry-ttl: 10m
+      cleanup-interval: 1m
+      redis-timeout: 250ms
+      mode-header-name: X-RateLimit-Mode
 spring:
   application:
     name: edge-server
@@ -76,10 +83,10 @@ spring:
 
             - name: RequestRateLimiter
               args:
-                redis-rate-limiter:
-                  requestedTokens: 1
-                  burstCapacity: 20
-                  replenishRate: 10
+                key-resolver: "#{@userKeyResolver}"
+                redis-rate-limiter.requestedTokens: 1
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.replenishRate: 10
 
             - name: SaveSession
   session:
@@ -124,9 +131,6 @@ logging:
     io.github.resilience4j: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread][traceId: %X{trace_id}, spanId: %X{span_id}] %-5level %logger{36} - %msg%n"
-
-
-
 
 
 
