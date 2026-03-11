@@ -1,0 +1,89 @@
+
+apiVersion: v1
+kind: ServiceAccount
+# 在 Kubernetes 中，ServiceAccount（简称 SA）就是你的 Java/Go 应用程序（Pod）在集群里的“身份证”
+metadata:
+  name: catalog-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+  labels:
+    app: catalog-service
+    service: catalog-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9001
+  selector:
+    app: catalog-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: catalog-service
+        version: v1
+    spec:
+      serviceAccountName: catalog-service
+      containers:
+        - image: ghcr.io/lilei6809/catalog-service:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          name: catalog-service
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9001
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://polar-postgres/polardb_catalog
+            - name: DATA_REDIS_HOST
+              value: polar-redis
+            - name: SPRING_PROFILES_ACTIVE
+              value: testdata
+---
+
+# 第三部分：路由规则 (HTTPRoute)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: catalog-service
+spec:
+  parentRefs:
+    - name: envoy-gateway
+  hostnames:
+    - "www.polarbookstore.com"
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: catalog-service
+          port: 9001
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /books

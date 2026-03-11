@@ -1,0 +1,259 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    db: polar-postgres
+data:
+  init.sql: |
+    CREATE DATABASE polardb_catalog;
+    CREATE DATABASE polardb_order;
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-postgres
+  labels:
+    db: polar-postgres
+spec:
+  selector:
+    matchLabels:
+      db: polar-postgres
+  template:
+    metadata:
+      labels:
+        db: polar-postgres
+    spec:
+      containers:
+        - name: polar-postgres
+          image: postgres:14.12
+          env:
+            - name: POSTGRES_USER
+              value: user
+            - name: POSTGRES_PASSWORD
+              value: password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 60Mi
+            limits:
+              cpu: 200m
+              memory: 120Mi
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-config-volume
+      volumes:
+        - name: postgres-config-volume
+          configMap:
+            name: postgres-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-postgres
+  labels:
+    db: polar-postgres
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-redis
+  labels:
+    db: polar-redis
+spec:
+  selector:
+    matchLabels:
+      db: polar-redis
+  template:
+    metadata:
+      labels:
+        db: polar-redis
+    spec:
+      containers:
+        - name: polar-redis
+          image: redis:7-alpine
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-redis
+  labels:
+    db: polar-redis
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+
+
+
+
+
+# tracing system
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: java-instrumentation
+  namespace: default
+spec:
+  exporter:
+    endpoint: http://otel-collector:4318   # 发给 Collector，不直接发给 Jaeger
+  propagators:
+    - tracecontext   # W3C TraceContext 标准
+    - baggage
+  java:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+    env:
+      - name: OTEL_METRICS_EXPORTER
+        value: "none"
+      - name: OTEL_LOGS_EXPORTER
+        value: "none"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+data:
+  collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    processors:
+      batch:
+
+    exporters:
+      otlp_http/jaeger:
+        endpoint: http://jaeger:4318
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp_http/jaeger]
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  labels:
+    app: jaeger
+spec:
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:latest
+          env:
+            - name: COLLECTOR_OTLP_ENABLED
+              value: "true"
+          ports:
+            - containerPort: 16686
+            - containerPort: 4318
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  labels:
+    app: jaeger
+spec:
+  type: ClusterIP
+  selector:
+    app: jaeger
+  ports:
+    - name: ui
+      protocol: TCP
+      port: 16686
+      targetPort: 16686
+    - name: otlp-http
+      protocol: TCP
+      port: 4318
+      targetPort: 4318
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:latest
+          args: ["--config=/conf/collector-config.yaml"]
+          ports:
+            - containerPort: 4318
+            - containerPort: 4317
+          volumeMounts:
+            - name: collector-config
+              mountPath: /conf
+      volumes:
+        - name: collector-config
+          configMap:
+            name: otel-collector-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  type: ClusterIP
+  selector:
+    app: otel-collector
+  ports:
+    - name: otlp-http
+      protocol: TCP
+      port: 4318
+      targetPort: 4318
+    - name: otlp-grpc
+      protocol: TCP
+      port: 4317
+      targetPort: 4317

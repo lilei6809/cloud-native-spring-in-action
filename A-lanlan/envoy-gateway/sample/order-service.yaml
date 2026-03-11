@@ -1,0 +1,91 @@
+
+apiVersion: v1
+kind: ServiceAccount
+# 在 Kubernetes 中，ServiceAccount（简称 SA）就是你的 Java/Go 应用程序（Pod）在集群里的“身份证”
+metadata:
+  name: order-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+    service: order-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9002
+  selector:
+    app: order-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: order-service
+        version: v1
+    spec:
+      serviceAccountName: order-service
+      containers:
+        - image: ghcr.io/lilei6809/order-service:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          name: order-service
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9002
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://polar-postgres/polardb_order
+            - name: DATA_REDIS_HOST
+              value: polar-redis
+            - name: SPRING_PROFILES_ACTIVE
+              value: testdata
+            - name: POLAR_CATALOG-SERVICE-URI
+              value: http://catalog-service
+---
+
+# 第三部分：路由规则 (HTTPRoute)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: order-service
+spec:
+  parentRefs:
+    - name: envoy-gateway
+  hostnames:
+    - "www.polarbookstore.com"
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: order-service
+          port: 9002
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /orders
