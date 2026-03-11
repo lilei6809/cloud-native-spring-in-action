@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
 
+@Deprecated
 public final class LocalTokenBucketRateLimiter implements ResilientRedisRateLimiter.LocalRateLimitRunner {
 
     private static final String REMAINING_HEADER = "X-RateLimit-Remaining";

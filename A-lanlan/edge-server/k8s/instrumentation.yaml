@@ -16,3 +16,13 @@ spec:
         value: "none"
       - name: OTEL_LOGS_EXPORTER
         value: "none"
+#      关于 OTEL_METRICS_EXPORTER: none 和 OTEL_LOGS_EXPORTER: none，这是说你只关心 Trace，
+#  不用 agent 来采集 Metrics 和 Logs，这个配置在生产里很常见，
+#  因为 Metrics 通常交给 Prometheus 来做，
+#  Logs 交给日志采集器，职责分离更清晰。
+
+# sample rate 的配置
+      - name: OTEL_TRACES_SAMPLER
+        value: "traceidratio"
+      - name: OTEL_TRACES_SAMPLER_ARG
+        value: "1"

@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import com.polarbookshop.edgeserver.ratelimit.ResilientRedisRateLimiter;
+import com.polarbookshop.edgeserver.ratelimit.ResilientGatewayRateLimiter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,8 +47,8 @@ class EdgeServerApplicationTest {
     @Test
     void verifyThatSpringContextLoads() {
         assertThat(applicationContext.getBean(RequestRateLimiterGatewayFilterFactory.class)).isNotNull();
-        assertThat(rateLimiter).isInstanceOf(ResilientRedisRateLimiter.class);
-        assertThat(((ResilientRedisRateLimiter) rateLimiter).getConfig())
+        assertThat(rateLimiter).isInstanceOf(ResilientGatewayRateLimiter.class);
+        assertThat(((ResilientGatewayRateLimiter) rateLimiter).getConfig())
                 .containsKeys("catalog-service", "order-service");
     }
 

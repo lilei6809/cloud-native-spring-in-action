@@ -5,7 +5,7 @@ import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 自定义的 local rate limiter 的配置类
+ *  redis script rate limiter 的配置类
  */
 @ConfigurationProperties("polar.gateway.rate-limiter")
 public class RateLimiterFallbackProperties {

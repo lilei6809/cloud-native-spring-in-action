@@ -54,6 +54,7 @@ public class ResilientGatewayRateLimiter extends AbstractRateLimiter<ResilientGa
 
     private static final Logger log = LoggerFactory.getLogger(ResilientGatewayRateLimiter.class);
 
+    //
     private final RateLimiterFallbackProperties properties;
     private final LocalFallbackRunner localFallbackRunner;
     private final RedisRateLimitRunner redisRateLimitRunner;
@@ -64,9 +65,7 @@ public class ResilientGatewayRateLimiter extends AbstractRateLimiter<ResilientGa
 
     /**
      * 简化构造器，主要给单元测试或最小接线场景使用。
-     *
-     * <p>这里不传 ConfigurationService，意味着不会真正参与 Gateway 的
-     * route/filter 配置绑定链路；测试里通常直接手工向 getConfig() 塞配置即可。
+     *  这里不传 ConfigurationService, 如果传入的 ConfigurationService 绑定的是
      */
     public ResilientGatewayRateLimiter(
             RateLimiterFallbackProperties properties,

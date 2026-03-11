@@ -17,6 +17,7 @@ import com.polarbookshop.edgeserver.config.RateLimiterFallbackProperties;
 
 import reactor.core.publisher.Mono;
 
+@Deprecated
 public class ResilientRedisRateLimiter extends AbstractRateLimiter<ResilientRedisRateLimiter.Config> {
 
     private static final String CONFIGURATION_PROPERTY_NAME = "redis-rate-limiter";

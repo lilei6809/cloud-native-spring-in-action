@@ -14,8 +14,8 @@ spec:
       labels:
         app: edge-server
       annotations:
-        # 就这一行！Operator 看到它，会自动完成所有 Agent 注入工作
-        instrumentation.opentelemetry.io/inject-java: "true"
+        # 就这一行！Operator 看到它，会注入 javaagent 工作
+        instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
     spec:
       containers:
         - name: edge-server
@@ -52,18 +52,25 @@ spec:
               value: "edge-server"
                 # 建议同时注入 K8s 的 Pod 和 Namespace 信息作为 Resource Attribute
                 # 这样在 Jaeger 里排查问题时，你能直接看到是哪个 Pod 产生的 Trace
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              value: "k8s.namespace.name=$(NAMESPACE),k8s.pod.name=$(POD_NAME)"
 
-            # 以下两个环境变量用于上面的 valueFrom
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
+
+            # 1. 先用 Downward API 获取本 pod 的信息
+            # springboot 中可以直接获取 @Value("${POD_NAME}")
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # 2. 组装给 OTEL Java 探针使用
+            # 探针看到这个变量后，发出去的每一条 tracing 都会自动带上这些标签
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE)"
+            # 3. 告诉探针 Collector 在哪里
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector.monitoring:4318"
 
 
 
