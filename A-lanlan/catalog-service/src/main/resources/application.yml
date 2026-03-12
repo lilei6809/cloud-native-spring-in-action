@@ -42,3 +42,8 @@ management:
 
 polar:
   greeting: Welcome to the local book catalog!
+
+app:
+  runtime:
+    podName: ${POD_NAME:local}
+    namespace: ${NAMESPACE:default}

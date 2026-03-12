@@ -1,30 +1,31 @@
 package com.polarbookshop.catalogservice.web;
 
+import com.polarbookshop.catalogservice.config.K8sProperties;
+import com.polarbookshop.catalogservice.config.PolarProperties;
 import com.polarbookshop.commoncore.exception.ResultBox;
 import jakarta.validation.Valid;
 
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookService;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("books")
+@Slf4j
 public class BookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, PolarProperties polarProperties, K8sProperties k8sProperties) {
         this.bookService = bookService;
+
     }
 
     @GetMapping
@@ -69,5 +70,8 @@ public class BookController {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 }

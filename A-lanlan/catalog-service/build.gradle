@@ -78,6 +78,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 //	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.testcontainers:postgresql'
+
+
+	// Lombok dependencies
+	compileOnly 'org.projectlombok:lombok:1.18.30' // Use the current version
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	// Add corresponding dependencies for testing if needed
+	testCompileOnly 'org.projectlombok:lombok:1.18.30'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 dependencyManagement {

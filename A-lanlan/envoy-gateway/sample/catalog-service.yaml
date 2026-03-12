@@ -38,7 +38,7 @@ spec:
     spec:
       serviceAccountName: catalog-service
       containers:
-        - image: ghcr.io/lilei6809/catalog-service:0.0.1-SNAPSHOT
+        - image: catalog-service-2.4
           imagePullPolicy: IfNotPresent
           name: catalog-service
           lifecycle:
@@ -77,13 +77,54 @@ spec:
   hostnames:
     - "www.polarbookstore.com"
   rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /hello/books
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /hello
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Gateway-Region
+                value: "ap-southeast-1"
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Strict-Transport-Security
+                value: "max-age=31536000; includeSubDomains"
+      backendRefs:
+        - name: catalog-service
+          kind: Service
+          port: 80
+
     - backendRefs:
         - group: ""
           kind: Service
           name: catalog-service
-          port: 9001
+          port: 80
           weight: 1
       matches:
         - path:
             type: PathPrefix
             value: /books
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: X-Gateway-Region
+                value: "ap-southeast-1"
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Strict-Transport-Security
+                value: "max-age=31536000; includeSubDomains"
+
+
+
+
+
