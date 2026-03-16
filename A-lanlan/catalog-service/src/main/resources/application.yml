@@ -8,6 +8,8 @@ server:
       max: 50
       min-spare: 5
 
+
+
 spring:
   application:
     name: catalog-service
@@ -47,3 +49,10 @@ app:
   runtime:
     podName: ${POD_NAME:local}
     namespace: ${NAMESPACE:default}
+
+jvm-resource:
+  cpuRequest: ${CPU_REQ:-1}
+  cpuLimit: ${CPU_LIMIT:-1}
+  memRequest: ${MEM_REQ:-1}
+  memLimit: ${MEM_LIMIT:-1}
+

@@ -1,2 +1,2 @@
-ALTER TABLE book
+ALTER TABLE books
     ADD COLUMN publisher varchar(255);

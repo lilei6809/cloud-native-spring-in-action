@@ -51,8 +51,8 @@ spec:
             - type: File
               file:
                 path: /dev/stdout
-          matches:
-            - "'x-envoy-logged' in request.headers"  # header 中必须有这个 key 的才 log
+#          matches:
+#            - "'x-envoy-logged' in request.headers"  # header 中必须有这个 key 的才 log
           format:
             type: JSON
             json:
