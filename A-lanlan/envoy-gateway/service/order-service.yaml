@@ -40,7 +40,7 @@ spec:
     spec:
       serviceAccountName: order-service
       containers:
-        - image: ghcr.io/lilei6809/order-service:0.0.1-SNAPSHOT
+        - image: order-service-6.2
           imagePullPolicy: IfNotPresent
           name: order-service
           lifecycle:

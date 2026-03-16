@@ -4,6 +4,7 @@ import com.polarbookshop.commoncore.exception.ResultBox;
 import com.polarbookshop.orderservice.domain.Order;
 import com.polarbookshop.orderservice.domain.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,19 @@ public class OrderController {
     @GetMapping("longRequest")
     public ResponseEntity<ResultBox<String>> longRequest(){
         return ResponseEntity.ok(ResultBox.success(orderService.getLongRequest()));
+    }
+
+    @GetMapping("hello")
+    public ResponseEntity<ResultBox<Void>> hello(){
+        String podName = System.getenv("POD_NAME");
+        String namespace =   System.getenv("NAMESPACE");
+        Integer cpuLimit = Integer.parseInt(System.getenv("CPU_LIMIT"));
+        Integer memLimit = Integer.parseInt(System.getenv("MEM_LIMIT"));
+
+
+
+        log.info("podName: {}, namespace: {},  cpuLimit: {}, memLimit: {}", podName, namespace, cpuLimit, memLimit);
+        return ResponseEntity.status(HttpStatus.OK).body(ResultBox.success(null));
     }
 
 }

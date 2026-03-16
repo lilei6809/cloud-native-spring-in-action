@@ -80,6 +80,9 @@ dependencies {
 	testImplementation 'org.testcontainers:postgresql'
 
 
+	// OpenTelemetry Logback appender — 把 Logback 日志通过 OTLP 发给 otel-collector
+//	implementation 'io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.13.1-alpha'
+
 	// Lombok dependencies
 	compileOnly 'org.projectlombok:lombok:1.18.30' // Use the current version
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'

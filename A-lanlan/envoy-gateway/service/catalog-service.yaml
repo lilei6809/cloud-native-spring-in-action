@@ -40,7 +40,7 @@ spec:
     spec:
       serviceAccountName: catalog-service
       containers:
-        - image: catalog-service-2.5.7
+        - image: catalog-service-2.6.0
           imagePullPolicy: IfNotPresent
           name: catalog-service
           lifecycle:

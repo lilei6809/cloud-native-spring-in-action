@@ -56,3 +56,10 @@ jvm-resource:
   memRequest: ${MEM_REQ:-1}
   memLimit: ${MEM_LIMIT:-1}
 
+logging:
+  level:
+    web: INFO
+    com:
+      polarbookshop:
+        catalogservice:
+          config: debug
