@@ -8,6 +8,7 @@ data:
   init.sql: |
     CREATE DATABASE polardb_catalog;
     CREATE DATABASE polardb_order;
+    
 
 ---
 
@@ -143,17 +144,36 @@ data:
 
     processors:
       batch:
+        timeout: 1s          # 最多等 5 秒就发一批
+        send_batch_size: 100  # 或者攒满 1000 条就发
+      tail_sampling:
+        policies:
+        # 策略一：所有包含错误的 Trace 全部保留
+        - name: errors-policy
+          type: status_code
+          status_code: { status_codes: [ERROR] }
+        
+        # 策略二：延迟超过 1 秒的 Trace 全部保留
+        - name: slow-requests-policy
+          type: latency
+          latency: { threshold_ms: 1000 }
 
     exporters:
-      otlp_http/jaeger:
+      otlphttp/jaeger:
         endpoint: http://jaeger:4318
+      otlphttp/loki:
+        endpoint: http://loki:3100/otlp
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp_http/jaeger]
+          exporters: [otlphttp/jaeger]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/loki]
 
 ---
 

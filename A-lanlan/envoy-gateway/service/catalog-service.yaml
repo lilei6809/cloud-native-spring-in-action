@@ -35,10 +35,12 @@ spec:
       labels:
         app: catalog-service
         version: v1
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
     spec:
       serviceAccountName: catalog-service
       containers:
-        - image: catalog-service-2.4
+        - image: catalog-service-2.5.1
           imagePullPolicy: IfNotPresent
           name: catalog-service
           lifecycle:
@@ -56,6 +58,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE)"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector:4318"
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_DATASOURCE_URL
@@ -74,9 +80,10 @@ metadata:
 spec:
   parentRefs:
     - name: envoy-gateway
-  hostnames:
-    - "www.polarbookstore.com"
+#  hostnames:
+#    - "www.polarbookstore.com"
   rules:
+
     - matches:
         - path:
             type: PathPrefix
@@ -97,10 +104,12 @@ spec:
             set:
               - name: Strict-Transport-Security
                 value: "max-age=31536000; includeSubDomains"
+
       backendRefs:
         - name: catalog-service
           kind: Service
           port: 80
+
 
     - backendRefs:
         - group: ""
@@ -108,10 +117,7 @@ spec:
           name: catalog-service
           port: 80
           weight: 1
-      matches:
-        - path:
-            type: PathPrefix
-            value: /books
+
       filters:
         - type: RequestHeaderModifier
           requestHeaderModifier:
@@ -123,6 +129,7 @@ spec:
             set:
               - name: Strict-Transport-Security
                 value: "max-age=31536000; includeSubDomains"
+
 
 
 

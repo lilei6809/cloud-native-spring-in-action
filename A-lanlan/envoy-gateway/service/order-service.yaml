@@ -35,6 +35,8 @@ spec:
       labels:
         app: order-service
         version: v1
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
     spec:
       serviceAccountName: order-service
       containers:
@@ -56,6 +58,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE)"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector:4318"
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_DATASOURCE_URL
@@ -69,15 +75,16 @@ spec:
 ---
 
 # 第三部分：路由规则 (HTTPRoute)
+# GET /orders  宽松规则, 不用权限
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: order-service
+  name: order-read-route
 spec:
   parentRefs:
     - name: envoy-gateway
-  hostnames:
-    - "www.polarbookstore.com"
+#  hostnames:
+#    - "www.polarbookstore.com"
   rules:
     - backendRefs:
         - group: ""
@@ -89,3 +96,57 @@ spec:
         - path:
             type: PathPrefix
             value: /orders
+          method: GET
+
+# 对于 post 请求, 需要验证 api key
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: order-post-route
+spec:
+  parentRefs:
+    - name: envoy-gateway
+  #  hostnames:
+  #    - "www.polarbookstore.com"
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: order-service
+          port: 80  # 注意: 这个地方填的是 Service 暴露的端口
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /orders
+          method: POST
+
+
+# 配置 api key
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: apikey-secret
+stringData:
+  client1: abc  # clientId : api key
+
+# 配置 security policy
+#---
+#apiVersion: gateway.envoyproxy.io/v1alpha1
+#kind: SecurityPolicy
+#metadata:
+#  name: apikey-auth-example
+#spec:
+#  targetRefs:
+#    - group: gateway.networking.k8s.io
+#      kind: HTTPRoute
+#      name: order-post-route
+#  apiKeyAuth:
+#    credentialRefs:
+#      - name: apikey-secret  # 引用上面的 secret
+#    extractFrom:
+#      - headers:
+#          - x-api-key

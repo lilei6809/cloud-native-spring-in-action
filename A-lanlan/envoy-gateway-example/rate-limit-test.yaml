@@ -1,0 +1,179 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: ai-generation-rate-limit
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: backend
+  rateLimit:
+    local:
+      rules:
+        # rule1: 全局兜底。
+        # 这个桶会匹配所有请求，细粒度规则命中时，请求通常也会同时消耗这个桶。
+        # 所以它适合表达总安全水位，不适合表达某类用户的精确独享配额。
+        - limit:
+            requests: 240
+            unit: Minute
+
+        # rule2: /generate 的 free 用户。
+        # 容易错的点:
+        # 1. 必须写 methods，否则同路径的 GET/PUT 也会被误伤。
+        # 2. 显式排除 internal 和 partner，避免和后面的规则重叠命中。
+        - clientSelectors:
+            - methods:
+                - value: POST
+            - path:
+                value: /api/v1/generate
+                type: Exact
+            - headers:
+                - name: x-plan
+                  value: free
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+                - name: x-partner
+                  value: "true"
+                  invert: true
+          limit:
+            requests: 20
+            unit: Hour
+
+        # rule3: /generate 的 pro 用户。
+        # 和 free 规则一样，显式排除 partner/internal，避免同一请求同时落入多个桶。
+        - clientSelectors:
+            - methods:
+                - value: POST
+            - path:
+                value: /api/v1/generate
+                type: Exact
+            - headers:
+                - name: x-plan
+                  value: pro
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+                - name: x-partner
+                  value: "true"
+                  invert: true
+          limit:
+            requests: 120
+            unit: Hour
+
+        # rule4: /generate 的外部 partner。
+        # 容易错的点:
+        # 1. 这里要表达的是 partner 且不是 internal。
+        # 2. 之前最容易写反成 x-team: ml-internal，结果只会匹配内部流量。
+        - clientSelectors:
+            - methods:
+                - value: POST
+            - path:
+                value: /api/v1/generate
+                type: Exact
+            - headers:
+                - name: x-partner
+                  value: "true"
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+          limit:
+            requests: 300
+            unit: Hour
+
+        # rule5: /generate/batch 的外部用户。
+        # 容易错的点:
+        # 1. type 不写时默认是 PathPrefix，这里显式写 Exact，避免扩大命中范围。
+        # 2. batch 比普通请求重，所以除了单独的 5/hour 配额，还要设置 request cost=10。
+        - clientSelectors:
+            - methods:
+                - value: POST
+            - path:
+                value: /api/v1/generate/batch
+                type: Exact
+            - headers:
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+          limit:
+            requests: 5
+            unit: Hour
+          cost:
+            request:
+              from: Number
+              number: 10
+
+        # rule6: /history 的 free 用户。
+        # history 是 GET，不要漏掉 methods。
+        - clientSelectors:
+            - methods:
+                - value: GET
+            - path:
+                value: /api/v1/history
+                type: Exact
+            - headers:
+                - name: x-plan
+                  value: free
+          limit:
+            requests: 60
+            unit: Minute
+
+        # rule7: /history 的 pro 外部用户。
+        # 显式排除 partner/internal，避免和后面的同档规则重叠命中。
+        - clientSelectors:
+            - methods:
+                - value: GET
+            - path:
+                value: /api/v1/history
+                type: Exact
+            - headers:
+                - name: x-plan
+                  value: pro
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+                - name: x-partner
+                  value: "true"
+                  invert: true
+          limit:
+            requests: 600
+            unit: Minute
+
+        # rule8: /history 的内部团队。
+        # 题目要求 internal 在 history 上按 pro 档处理，而不是完全豁免。
+        - clientSelectors:
+            - methods:
+                - value: GET
+            - path:
+                value: /api/v1/history
+                type: Exact
+            - headers:
+                - name: x-team
+                  value: ml-internal
+          limit:
+            requests: 600
+            unit: Minute
+
+        # rule9: /history 的外部 partner。
+        # 题目要求 partner 走 pro 档，但单独列出来可以避免"非 free 全放进来"的误配。
+        - clientSelectors:
+            - methods:
+                - value: GET
+            - path:
+                value: /api/v1/history
+                type: Exact
+            - headers:
+                - name: x-partner
+                  value: "true"
+                - name: x-team
+                  value: ml-internal
+                  invert: true
+          limit:
+            requests: 600
+            unit: Minute
+
+      # feedback 和 /healthz 没有特定 limit，走全局兜底。
+      # 这份配置仍然不是严格 per-user:
+      # 1. 这里只是 local rate limit，请求只在单个 Envoy 实例内计数。
+      # 2. 当前分桶维度是 plan/team/partner/path/method，不是用户 ID。
+      # 3. 如果要做真正的跨实例按用户限流，通常要用 global rate limit + 共享存储（如 Redis）。

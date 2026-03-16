@@ -27,9 +27,7 @@ public class HelloController {
 
 
     @GetMapping
-    public String getGreeting(@RequestHeader Map<String, String> headers) {
-
-        String region = headers.get("X-Gateway-Region");
+    public String getGreeting(@RequestHeader("X-Gateway-Region") String region) {
 
         String info = "Catalog HomeController: req region={"+region+"},  POD={"+ k8sProperties.getPodName() +"}, namespace={"+k8sProperties.getNamespace()+"}\n";
 

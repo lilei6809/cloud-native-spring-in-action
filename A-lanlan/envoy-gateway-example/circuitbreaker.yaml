@@ -1,0 +1,27 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: circuitbreaker-for-route
+  namespace: default
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: backend
+  circuitBreaker:
+    maxPendingRequests: 10
+    maxParallelRequests: 10
+  healthCheck:
+    passive:
+      interval: 2s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      consecutive5XxErrors: 3
+      consecutiveGatewayErrors: 0
+      consecutiveLocalOriginFailures: 0
+      splitExternalLocalOriginErrors: false
+
+
+
+
+

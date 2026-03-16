@@ -1,4 +1,4 @@
-CREATE TABLE book (
+CREATE TABLE books (
       id                  BIGSERIAL PRIMARY KEY NOT NULL,
       author              varchar(255) NOT NULL,
       isbn                varchar(255) UNIQUE NOT NULL,

@@ -6,7 +6,6 @@ server:
     idle-timeout: 10s # 当 TCP connection 建立后 10s 内无数据, 则关闭
 
 
-
 spring:
   application:
     name: edge-server
