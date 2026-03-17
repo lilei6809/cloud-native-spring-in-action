@@ -13,6 +13,7 @@ metadata:
     app: catalog-service
     service: catalog-service
 spec:
+  type: ClusterIP
   ports:
     - name: http
       port: 80
@@ -25,7 +26,7 @@ kind: Deployment
 metadata:
   name: catalog-service
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: catalog-service
@@ -40,7 +41,7 @@ spec:
     spec:
       serviceAccountName: catalog-service
       containers:
-        - image: catalog-service-2.6.0
+        - image: catalog-service-6.2
           imagePullPolicy: IfNotPresent
           name: catalog-service
           lifecycle:
@@ -106,7 +107,6 @@ spec:
 #  hostnames:
 #    - "www.polarbookstore.com"
   rules:
-
     - matches:
         - path:
             type: PathPrefix
@@ -134,24 +134,6 @@ spec:
           port: 80
 
 
-    - backendRefs:
-        - group: ""
-          kind: Service
-          name: catalog-service
-          port: 80
-          weight: 1
-
-      filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
-            set:
-              - name: X-Gateway-Region
-                value: "ap-southeast-1"
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
-            set:
-              - name: Strict-Transport-Security
-                value: "max-age=31536000; includeSubDomains"
 
 
 

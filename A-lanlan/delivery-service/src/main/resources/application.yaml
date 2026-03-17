@@ -1,0 +1,46 @@
+server:
+  port: 9003
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 10s
+
+spring:
+  application:
+    name: delivery-service
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}
+      request-connect-timeout: 5000 # 5s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false # In production, set to true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
+
+    kafka:
+      bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      producer:
+        acks: all
+        retries: 3
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      consumer:
+        group-id: ${SPRING_KAFKA_CONSUMER_GROUP_ID:${spring.application.name}}
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          spring.json.trusted.packages: "*"
+
+
+

@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: polar-postgres
-          image: postgres:14.12
+          image: postgres:14.22-alpine
           env:
             - name: POSTGRES_USER
               value: user
@@ -103,7 +103,51 @@ spec:
       port: 6379
       targetPort: 6379
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-mongo
+  labels:
+    db: polar-mongo
+spec:
+  selector:
+    matchLabels:
+      db: polar-mongo
+  template:
+    metadata:
+      labels:
+        db: polar-mongo
+    spec:
+      containers:
+        - name: polar-mongo
+          image: mongo:8.2
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: polar-mongo-pvc
 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-mongo
+  labels:
+    db: polar-mongo
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
 
 
 

@@ -8,13 +8,15 @@ This is a personal learning codebase for the book *Cloud Native Spring in Action
 
 ## Services
 
-| Service | Port | Database |
-|---------|------|----------|
-| `config-service` | 8888 | — (Git-backed config repo) |
-| `catalog-service` | 9001 | `polardb_catalog` (PostgreSQL) |
-| `order-service` | 9002 | `polardb_order` (PostgreSQL) |
+| Service | Port | Database | Notes |
+|---------|------|----------|-------|
+| `config-service` | 8888 | — | Git-backed config repo |
+| `catalog-service` | 9001 | `polardb_catalog` (PostgreSQL) | Spring MVC |
+| `order-service` | 9002 | `polardb_order` (PostgreSQL) | Spring MVC + Feign |
+| `edge-server` | 9000 | Redis (sessions + rate-limiting) | Spring Cloud Gateway + WebFlux |
+| `delivery-service` | 9003 | — | Kafka consumer/producer (Spring Cloud Stream) |
 
-**Startup order:** `config-service` → `catalog-service` / `order-service`
+**Startup order:** `config-service` → `catalog-service` / `order-service` → `edge-server`
 
 `order-service` calls `catalog-service` via OpenFeign (`CatalogClient` / `CatalogLongRequestClient`) at `polar.catalog-service-uri`.
 
@@ -55,18 +57,66 @@ Integration tests use Testcontainers (PostgreSQL) — Docker must be running.
 ### catalog-service
 - Standard layered Spring MVC: `web` → `domain` (service + repository) pattern
 - Spring Data JDBC with Flyway migrations (`resources/db/migration/`)
-- Custom config properties via `PolarProperties` (`polar.greeting`)
+- Custom config properties via `PolarProperties` (`polar.greeting`) and `K8sProperties` (pod name injection)
 - `BookDataLoader` seeds test data when `testdata` profile is active
+- `MdcContextFilter` reads `x-tanant-id` / `x-user-id` headers and puts them into MDC for structured logging
 
 ### order-service
 - Same layered structure; uses Lombok (catalog-service does not)
 - OpenFeign clients in `config/`: `CatalogClient` (short timeout) and `CatalogLongRequestClient` (4s timeout)
 - `FeignExceptionDecoder` + `FeignHeaderInterceptor` for cross-service error handling
+- `FeignMdcIntercepter` propagates MDC context (`tenantId`, `userId`) as request headers on outbound Feign calls
+- `MdcContextFilter` reads MDC headers back on the receiving end
 - Uses Spring Virtual Threads (`spring.threads.virtual.enabled: true`)
+
+### edge-server
+- Spring Cloud Gateway (WebFlux-based)
+- Routes: `/books/**` → catalog-service, `/orders/**` → order-service
+- Per-route circuit breakers (Resilience4j) with `/catalog-fallback` fallback endpoint
+- `ResilientRedisRateLimiter`: Redis-backed rate limiting with local `LocalTokenBucketRateLimiter` fallback when Redis is unavailable
+- Redis sessions (`spring.session.store-type: redis`, namespace `polar:edge`)
+- Global retry filter for GET + server errors
+
+### delivery-service
+- Spring Cloud Stream with Kafka binder (consumer + producer)
+- Uses Lombok and Virtual Threads
+- Currently a skeleton — no domain logic yet
 
 ### config-service
 - Thin Spring Cloud Config Server; reads from `https://github.com/PolarBookshop/config-repo`
 - No application logic — config only
+
+## Observability Stack (Kubernetes / `envoy-gateway/infra.yaml`)
+
+The infra manifest deploys:
+
+| Component | Purpose |
+|-----------|---------|
+| OpenTelemetry Collector | Receives OTLP traces + logs; fans out to Jaeger and Loki |
+| Jaeger | Distributed tracing UI |
+| Loki | Log aggregation |
+| OTel auto-instrumentation | `Instrumentation` CRD injects the Java agent into pods |
+
+**Trace/log flow:** App (OTLP via Java agent) → OTel Collector → Jaeger (traces) / Loki (logs)
+
+The OTel Collector uses **tail sampling**: keeps all error traces and slow requests (>1s), drops the rest.
+
+### Envoy Gateway (`envoy-gateway/`)
+An alternative/complementary ingress to the Spring Cloud Gateway, using Envoy Proxy via the Kubernetes Envoy Gateway operator:
+- `infra.yaml` — shared infrastructure (Postgres, Redis, MongoDB, OTel Collector, Jaeger)
+- `component/envoy-tracing-logging.yaml` — `EnvoyProxy` config for tracing (OTel → otel-collector:4317) and structured JSON access logging to stdout + OTel
+- `component/gateway.yaml` / `component/loki.yaml` — Gateway and Loki deployments
+- `service/catalog-service.yaml` / `service/order-service.yaml` — `HTTPRoute` resources routing traffic to services
+
+### Structured Logging / MDC Pattern
+Both `catalog-service` and `order-service` use `MdcContextFilter` to inject business context into the MDC before each request:
+- `x-tenant-id` header → MDC `tenantId`
+- `x-user-id` header → MDC `userId`
+- Trace/span IDs are automatically populated by the OTel Java agent
+
+When `order-service` calls `catalog-service` via Feign, `FeignMdcIntercepter` copies MDC values into outbound request headers so context is not lost across service boundaries.
+
+Logback is configured to output JSON (via `logback-spring.xml`) in both services so logs can be parsed by Loki.
 
 ## CI/CD
 
@@ -75,4 +125,4 @@ Each service has `.github/workflows/commit-stage.yml` that:
 2. Validates Kubernetes manifests with `kubeconform`
 3. On `main` branch: builds and publishes container image to GHCR
 
-Kubernetes manifests are in each service's `k8s/` directory.
+Kubernetes manifests are in each service's `k8s/` directory. The `envoy-gateway/` directory contains cluster-wide infra and Envoy Gateway resources applied separately.

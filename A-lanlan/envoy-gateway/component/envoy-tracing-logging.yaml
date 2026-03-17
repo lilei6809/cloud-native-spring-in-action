@@ -4,6 +4,12 @@ metadata:
   name: production-proxy-config
   namespace: default
 spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
   telemetry:
     tracing:
       samplingRate: 100        # 采样率，0-100，百分比
