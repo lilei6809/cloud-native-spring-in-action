@@ -4,7 +4,6 @@ import com.polarbookshop.commoncore.exception.ResultBox;
 import com.polarbookshop.orderservice.model.Book;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 

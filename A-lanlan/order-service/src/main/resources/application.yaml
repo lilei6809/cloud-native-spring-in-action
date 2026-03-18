@@ -72,11 +72,11 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 5
         # 失败率阈值（百分比）：20 次调用中失败 ≥ 50% 则触发熔断
         # 失败 = 异常 或 超过 timelimiter 的 timeout-duration
-        failure-rate-threshold: 50
+        failure-rate-threshold: 30
         # 熔断器打开后等待 15s 再进入 half-open 探测
         # 给下游服务留出恢复时间
         wait-duration-in-open-state:
-          seconds: 15
+          seconds: 10
         # 生产标准：记录哪些异常计入熔断统计
         record-exceptions:
           - java.io.IOException

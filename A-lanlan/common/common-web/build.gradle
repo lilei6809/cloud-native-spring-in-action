@@ -23,13 +23,16 @@ dependencies {
     implementation project(':common-core')
 
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'io.github.openfeign:feign-core:13.6'
     compileOnly 'org.springframework:spring-web'
     compileOnly 'org.slf4j:slf4j-api:2.0.16'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     testImplementation platform('org.springframework.boot:spring-boot-dependencies:3.5.11')
+    testImplementation 'io.github.openfeign:feign-core:13.6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

@@ -63,7 +63,8 @@ class CatalogClientTest {
                 throw new IllegalStateException("Failed to start MockWebServer", e);
             }
         }
-        registry.add("polar.catalog-service-uri", () -> mockWebServer.url("/").toString().replaceAll("/$", ""));
+        registry.add("polar.catalog-service-uri",
+                () -> mockWebServer.url("/").toString().replaceAll("/$", ""));
     }
 
     @AfterAll
@@ -170,6 +171,8 @@ class CatalogClientTest {
         assertThat(body.getCode()).isEqualTo("3010");
         assertThat(body.getData()).isNull();
     }
+
+
 
     @SpringBootConfiguration
     @EnableAutoConfiguration
