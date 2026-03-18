@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CatalogClientFallbackFactory implements FallbackFactory<CatalogClient> {
 
+    //TODO: produce 调用失败的事件, 由其他告警服务进行 邮件或 telegram 通知
     @Override
     public CatalogClient create(Throwable cause) {
         return new CatalogClient() {

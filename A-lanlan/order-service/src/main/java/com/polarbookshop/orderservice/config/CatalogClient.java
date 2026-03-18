@@ -4,12 +4,14 @@ import com.polarbookshop.commoncore.exception.ResultBox;
 import com.polarbookshop.orderservice.model.Book;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "catalog-service",
         url = "${polar.catalog-service-uri}",
-        contextId = "catalogClient"
+        contextId = "catalogClient",
+        fallbackFactory = CatalogClientFallbackFactory.class
 )
 public interface CatalogClient {
 

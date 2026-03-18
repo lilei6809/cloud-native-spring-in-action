@@ -13,10 +13,11 @@ This is a personal learning codebase for the book *Cloud Native Spring in Action
 | `config-service` | 8888 | — | Git-backed config repo |
 | `catalog-service` | 9001 | `polardb_catalog` (PostgreSQL) | Spring MVC |
 | `order-service` | 9002 | `polardb_order` (PostgreSQL) | Spring MVC + Feign |
-| `edge-server` | 9000 | Redis (sessions + rate-limiting) | Spring Cloud Gateway + WebFlux |
 | `delivery-service` | 9003 | — | Kafka consumer/producer (Spring Cloud Stream) |
 
-**Startup order:** `config-service` → `catalog-service` / `order-service` → `edge-server`
+The `edge-server` (Spring Cloud Gateway) has been **replaced by Envoy Gateway** as the ingress layer. `edge-server/` is kept for reference only.
+
+**Startup order:** `config-service` → `catalog-service` / `order-service`
 
 `order-service` calls `catalog-service` via OpenFeign (`CatalogClient` / `CatalogLongRequestClient`) at `polar.catalog-service-uri`.
 
@@ -69,13 +70,9 @@ Integration tests use Testcontainers (PostgreSQL) — Docker must be running.
 - `MdcContextFilter` reads MDC headers back on the receiving end
 - Uses Spring Virtual Threads (`spring.threads.virtual.enabled: true`)
 
-### edge-server
-- Spring Cloud Gateway (WebFlux-based)
-- Routes: `/books/**` → catalog-service, `/orders/**` → order-service
-- Per-route circuit breakers (Resilience4j) with `/catalog-fallback` fallback endpoint
-- `ResilientRedisRateLimiter`: Redis-backed rate limiting with local `LocalTokenBucketRateLimiter` fallback when Redis is unavailable
-- Redis sessions (`spring.session.store-type: redis`, namespace `polar:edge`)
-- Global retry filter for GET + server errors
+### edge-server (retired — kept for reference)
+- Replaced by Envoy Gateway; do not extend or deploy
+- Was: Spring Cloud Gateway with Resilience4j circuit breakers, Redis rate limiting, Redis sessions
 
 ### delivery-service
 - Spring Cloud Stream with Kafka binder (consumer + producer)
@@ -102,7 +99,7 @@ The infra manifest deploys:
 The OTel Collector uses **tail sampling**: keeps all error traces and slow requests (>1s), drops the rest.
 
 ### Envoy Gateway (`envoy-gateway/`)
-An alternative/complementary ingress to the Spring Cloud Gateway, using Envoy Proxy via the Kubernetes Envoy Gateway operator:
+The active ingress layer, replacing `edge-server`. Uses Envoy Proxy via the Kubernetes Envoy Gateway operator:
 - `infra.yaml` — shared infrastructure (Postgres, Redis, MongoDB, OTel Collector, Jaeger)
 - `component/envoy-tracing-logging.yaml` — `EnvoyProxy` config for tracing (OTel → otel-collector:4317) and structured JSON access logging to stdout + OTel
 - `component/gateway.yaml` / `component/loki.yaml` — Gateway and Loki deployments

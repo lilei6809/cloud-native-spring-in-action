@@ -2,7 +2,7 @@ server:
   port: 9002
   shutdown: graceful
   tomcat:
-    connection-timeout: 2s
+    connection-timeout: 1s
     keep-alive-timeout: 15s
 
 spring:
@@ -18,16 +18,20 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_SERVER_URI:http://localhost:8888}
-      request-connect-timeout: 5000 # 5s
-      request-read-timeout: 5000 # 5s
+      request-connect-timeout: 2000 # 5s
+      request-read-timeout: 2000 # 5s
       fail-fast: false # In production, set to true
       retry:
-        max-attempts: 6
+        max-attempts: 4
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
 
     openfeign:
+      circuitbreaker:
+        enabled: true  # 启用 Feign 与 Resilience4j 的集成
+        alphanumeric-ids:  # group 按 contextId 分组，方便对不同 client 独立配置熔断参数
+          enabled: true
       okhttp:
         enabled: true  # 使用 okhttp 连接池
       httpclient:
@@ -37,14 +41,14 @@ spring:
       client:
         config:
           default: # 全局默认配置
-            connect-timeout: 2000
-            read-timeout: 1000
+            connect-timeout: 500
+            read-timeout: 500
           catalogClient: # 特定 Client 的配置
             read-timeout: 1000
             logger-level: full
-          catalogLongRequestClient:
-            read-timeout: 100
-            logger-level: full
+#          catalogLongRequestClient:
+#            read-timeout: 100
+#            logger-level: full
 
 
   datasource:
@@ -52,8 +56,53 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:5432/polardb_order
     hikari:
-      connection-timeout: 2000 #ms
-      maximum-pool-size: 5
+      connection-timeout: 500 #ms
+      maximum-pool-size: 10
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        # 滑动窗口大小：统计最近 20 次调用来计算失败率
+        # 窗口越大，熔断判断越稳定，但对突发故障反应越慢
+        sliding-window-size: 20
+        # half-open 状态下允许放行的探测请求数
+        # 熔断器打开 15s 后进入 half-open，放行 5 次请求，
+        # 若成功率达标则关闭熔断器，否则重新打开
+        permitted-number-of-calls-in-half-open-state: 5
+        # 失败率阈值（百分比）：20 次调用中失败 ≥ 50% 则触发熔断
+        # 失败 = 异常 或 超过 timelimiter 的 timeout-duration
+        failure-rate-threshold: 50
+        # 熔断器打开后等待 15s 再进入 half-open 探测
+        # 给下游服务留出恢复时间
+        wait-duration-in-open-state:
+          seconds: 15
+        # 生产标准：记录哪些异常计入熔断统计
+        record-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - feign.FeignException
+        # 不计入熔断的异常（业务异常不应触发熔断）
+        ignore-exceptions:
+          - com.polarbookshop.commoncore.exception.BusinessException
+    instances:
+      # contextId = "catalogClient" → instance name = "catalogClient"
+      catalogClient:
+        base-config: default
+  timelimiter:
+    configs:
+      default:
+        # 单次调用超时阈值：超过 1.5s 视为失败，计入熔断统计
+        # 需与 Feign 的 read-timeout 配合：通常 timelimiter >= feign read-timeout
+        # 此处 feign read-timeout=1s，timelimiter=3s，feign 超时会先触发
+        timeout-duration: 1500ms
+        # 超时后取消正在执行的 Future（同步 Feign 无效，保留为文档说明）
+        cancel-running-future: false
+    instances:
+      catalogClient:
+        base-config: default
+
+
 
 polar:
   catalog-service-uri: ${POLAR_CATALOG-SERVICE-URI:http://localhost:9001}

@@ -39,6 +39,18 @@ spec:
       annotations:
         instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
     spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16-alpine
+          command:
+            - sh
+            - -c
+            - |
+              until pg_isready -h polar-postgres -p 5432; do
+                echo "Waiting for PostgreSQL at polar-postgres:5432..."
+                sleep 2
+              done
+              echo "PostgreSQL is ready."
       serviceAccountName: catalog-service
       containers:
         - image: catalog-service-6.2
@@ -94,6 +106,18 @@ spec:
               value: polar-redis
             - name: SPRING_PROFILES_ACTIVE
               value: testdata
+
+            - name: JAVA_OPTS
+              value: >-
+                -XX:+UseContainerSupport  
+                -XX:MaxRAMPercentage=75.0
+                -XX:InitialRAMPercentage=75.0
+                -XX:+AlwaysPreTouch
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:HeapDumpPath=/dump/heap.hprof
+                -XX:+PrintGCDetails
+                -XX:+PrintGCDateStamps
+                -Xloggc:/log/gc.log
 ---
 
 # 第三部分：路由规则 (HTTPRoute)

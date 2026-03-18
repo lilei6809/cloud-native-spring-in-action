@@ -11,6 +11,13 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Local
   telemetry:
+    metrics:
+      sinks:
+        - type: OpenTelemetry
+          openTelemetry:
+            host: "otel-collector.monitoring.svc.cluster.local" # 收集器的内部地址
+            port: 4317 # OTLP gRPC 端口
+
     tracing:
       samplingRate: 100        # 采样率，0-100，百分比
       provider:
@@ -96,3 +103,5 @@ spec:
               duration_ms: "%DURATION%"
 
               "x-envoy-upstream-service-time": "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%"
+
+

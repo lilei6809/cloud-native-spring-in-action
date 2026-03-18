@@ -1,0 +1,197 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: java-instrumentation
+  namespace: default
+spec:
+  exporter:
+    endpoint: http://otel-collector:4318   # 发给 Collector，不直接发给 Jaeger
+  propagators:
+    - tracecontext   # W3C TraceContext 标准
+    - baggage
+  java:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+    env:
+      - name: OTEL_METRICS_EXPORTER
+        value: "otlp"
+      - name: OTEL_LOGS_EXPORTER
+        value: "otlp"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+data:
+  collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      prometheus/envoy:
+        config:
+          scrape_configs:
+            - job_name: envoy
+              scrape_interval: 15s
+              static_configs:
+                - targets: ["envoy-stats.envoy-gateway-system.svc.cluster.local:19001"]
+              metrics_path: /stats/prometheus
+
+    processors:
+      batch:
+        timeout: 1s
+        send_batch_size: 100
+
+      tail_sampling:
+        policies:
+        - name: errors-policy
+          type: status_code
+          status_code: { status_codes: [ERROR] }
+        - name: slow-requests-policy
+          type: latency
+          latency: { threshold_ms: 1000 }
+
+      filter/drop_useless_envoy_metrics:
+        error_mode: ignore
+        metrics:
+          exclude:
+            match_type: regexp
+            metric_names:
+              - "^envoy_server_.*"
+              - "^envoy_memory_.*"
+              - "^envoy_worker_.*"
+
+    exporters:
+      otlphttp/jaeger:
+        endpoint: http://jaeger:4318
+      otlphttp/loki:
+        endpoint: http://loki:3100/otlp
+      prometheus:
+        endpoint: 0.0.0.0:8889
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/jaeger]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/loki]
+        metrics:
+          receivers: [otlp, prometheus/envoy]
+          processors: [filter/drop_useless_envoy_metrics, batch]
+          exporters: [prometheus]
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:latest
+          args: ["--config=/conf/collector-config.yaml"]
+          ports:
+            - containerPort: 4318
+            - containerPort: 4317
+            - containerPort: 8889
+          volumeMounts:
+            - name: collector-config
+              mountPath: /conf
+      volumes:
+        - name: collector-config
+          configMap:
+            name: otel-collector-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  type: ClusterIP
+  selector:
+    app: otel-collector
+  ports:
+    - name: otlp-http
+      protocol: TCP
+      port: 4318
+      targetPort: 4318
+    - name: otlp-grpc
+      protocol: TCP
+      port: 4317
+      targetPort: 4317
+    - name: metrics
+      protocol: TCP
+      port: 8889
+      targetPort: 8889
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  labels:
+    app: jaeger
+spec:
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:latest
+          env:
+            - name: COLLECTOR_OTLP_ENABLED
+              value: "true"
+          ports:
+            - containerPort: 16686
+            - containerPort: 4318
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  labels:
+    app: jaeger
+spec:
+  type: ClusterIP
+  selector:
+    app: jaeger
+  ports:
+    - name: ui
+      protocol: TCP
+      port: 16686
+      targetPort: 16686
+    - name: otlp-http
+      protocol: TCP
+      port: 4318
+      targetPort: 4318

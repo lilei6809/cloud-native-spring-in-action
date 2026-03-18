@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    db: polar-postgres
+data:
+  init.sql: |
+    CREATE DATABASE polardb_catalog;
+    CREATE DATABASE polardb_order;
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-postgres
+  labels:
+    db: polar-postgres
+spec:
+  selector:
+    matchLabels:
+      db: polar-postgres
+  template:
+    metadata:
+      labels:
+        db: polar-postgres
+    spec:
+      containers:
+        - name: polar-postgres
+          image: postgres:14.22-alpine
+          env:
+            - name: POSTGRES_USER
+              value: user
+            - name: POSTGRES_PASSWORD
+              value: password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 60Mi
+            limits:
+              cpu: 200m
+              memory: 120Mi
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgres-config-volume
+      volumes:
+        - name: postgres-config-volume
+          configMap:
+            name: postgres-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-postgres
+  labels:
+    db: polar-postgres
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-redis
+  labels:
+    db: polar-redis
+spec:
+  selector:
+    matchLabels:
+      db: polar-redis
+  template:
+    metadata:
+      labels:
+        db: polar-redis
+    spec:
+      containers:
+        - name: polar-redis
+          image: redis:7-alpine
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-redis
+  labels:
+    db: polar-redis
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polar-mongo
+  labels:
+    db: polar-mongo
+spec:
+  selector:
+    matchLabels:
+      db: polar-mongo
+  template:
+    metadata:
+      labels:
+        db: polar-mongo
+    spec:
+      containers:
+        - name: polar-mongo
+          image: mongo:8.2
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: polar-mongo-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: polar-mongo
+  labels:
+    db: polar-mongo
+spec:
+  type: ClusterIP
+  selector:
+    db: polar-mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

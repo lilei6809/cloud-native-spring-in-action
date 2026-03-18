@@ -9,6 +9,7 @@ import com.polarbookshop.orderservice.model.Book;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class OrderService {
 
     public Order submitOrder(String isbn, Integer quantity){
 
-        ResponseEntity<ResultBox<Book>> response = catalogClient.getBookByIsbn(isbn);
+        ResponseEntity<ResultBox<Book>> response = getBookByIsbn(isbn);
         log.info(response.toString());
 
         ResultBox<Book> box = response.getBody();
@@ -59,6 +60,11 @@ public class OrderService {
                 .build();
 
         return repo.save(completedOrder);
+    }
+
+
+    private ResponseEntity<ResultBox<Book>> getBookByIsbn(String isbn) {
+        return catalogClient.getBookByIsbn(isbn);
     }
 
     private Order buildRejectedOrder(String isbn, Integer quantity) {

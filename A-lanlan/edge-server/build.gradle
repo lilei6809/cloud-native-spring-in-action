@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.3'
+    id 'org.springframework.boot' version '3.5.11'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.google.cloud.tools.jib' version '3.4.3'
 }
@@ -53,8 +53,8 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2025.1.0")
-    set('testcontainersVersion', "1.17.3")
+    set('springCloudVersion', "2025.0.1")
+    set('testcontainersVersion', "1.20.6")
 }
 
 dependencies {
