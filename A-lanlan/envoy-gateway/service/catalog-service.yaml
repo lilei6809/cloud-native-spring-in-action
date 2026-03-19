@@ -39,21 +39,9 @@ spec:
       annotations:
         instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
     spec:
-      initContainers:
-        - name: wait-for-postgres
-          image: postgres:16-alpine
-          command:
-            - sh
-            - -c
-            - |
-              until pg_isready -h polar-postgres -p 5432; do
-                echo "Waiting for PostgreSQL at polar-postgres:5432..."
-                sleep 2
-              done
-              echo "PostgreSQL is ready."
       serviceAccountName: catalog-service
       containers:
-        - image: catalog-service-6.2
+        - image: catalog-service-6.2.1
           imagePullPolicy: IfNotPresent
           name: catalog-service
           lifecycle:

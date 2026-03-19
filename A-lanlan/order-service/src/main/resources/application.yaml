@@ -66,6 +66,9 @@ resilience4j:
         # 滑动窗口大小：统计最近 20 次调用来计算失败率
         # 窗口越大，熔断判断越稳定，但对突发故障反应越慢
         sliding-window-size: 20
+
+        minimum-number-of-calls: 10    # ← 加这行，至少 10 次后开始评估
+
         # half-open 状态下允许放行的探测请求数
         # 熔断器打开 15s 后进入 half-open，放行 5 次请求，
         # 若成功率达标则关闭熔断器，否则重新打开

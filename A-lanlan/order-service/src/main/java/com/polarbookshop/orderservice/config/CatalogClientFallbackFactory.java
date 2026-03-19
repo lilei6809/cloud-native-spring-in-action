@@ -1,10 +1,11 @@
 package com.polarbookshop.orderservice.config;
 
 import com.polarbookshop.commoncore.exception.ResultBox;
+import com.polarbookshop.commoncore.exception.SystemException;
 import com.polarbookshop.orderservice.model.Book;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +13,21 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CatalogClientFallbackFactory implements FallbackFactory<CatalogClient> {
 
-    //TODO: produce 调用失败的事件, 由其他告警服务进行 邮件或 telegram 通知
     @Override
     public CatalogClient create(Throwable cause) {
         return new CatalogClient() {
             @Override
             public ResponseEntity<ResultBox<Book>> getBookByIsbn(String isbn) {
-                // // 1. 记下致命日志，发送钉钉/微信报警
-                log.error("Catalog 服务调用失败! 原因: {}", cause.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResultBox.fail("3010", cause.getMessage()));
+                if (cause instanceof CallNotPermittedException) {
+                    // Circuit Breaker 已打开：快速失败，不发起真实请求
+                    //TODO: 发送告警事件 (钉钉/Telegram/PagerDuty)
+
+                    log.warn("Circuit breaker OPEN, catalog-service 降级中, isbn={}", isbn);
+                    throw new SystemException("书目服务降级中，请稍后重试", "B3001");
+                }
+                // 网络故障 / 超时 / 重试耗尽
+                log.error("Catalog 服务调用失败 isbn={}, cause={}", isbn, cause.getMessage(), cause);
+                throw new SystemException("catalog-service 调用失败: " + cause.getMessage(), "B1001");
             }
         };
     }

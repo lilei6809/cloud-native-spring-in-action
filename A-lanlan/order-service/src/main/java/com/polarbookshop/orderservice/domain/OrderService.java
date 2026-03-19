@@ -9,7 +9,6 @@ import com.polarbookshop.orderservice.model.Book;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,19 +37,17 @@ public class OrderService {
     public Order submitOrder(String isbn, Integer quantity){
 
         ResponseEntity<ResultBox<Book>> response = getBookByIsbn(isbn);
-        log.info(response.toString());
-
         ResultBox<Book> box = response.getBody();
-        log.info("===============Box received:  {}", box.toString());
         Book book = box.getData();
 
-
+        // catalog 返回 200 但 data=null，说明书不存在 (业务异常，非系统故障)
         if (book == null) {
-            Order order = buildRejectedOrder(isbn, quantity);
-            repo.save(order);
-            throw new BusinessException("The book with ISBN " + isbn + " was not found.", "A0404");
+            Order rejectedOrder = buildRejectedOrder(isbn, quantity);
+            repo.save(rejectedOrder);
+            throw new BusinessException(box.getMessage(), box.getCode());
         }
 
+        log.info("Book found: {}", box);
         Order completedOrder = Order.builder()
                 .bookIsbn(isbn)
                 .quantity(quantity)

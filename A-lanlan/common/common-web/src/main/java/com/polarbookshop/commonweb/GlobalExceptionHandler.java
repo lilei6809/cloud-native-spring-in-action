@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResultBox<?>> handleSystemException(SystemException e) {
         log.error("系统异常: code={}, msg={}", e.getCode(), e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(ResultBox.fail(resolveCode(e.getCode(), DEFAULT_SYSTEM_CODE), GENERIC_SERVER_MESSAGE));
+                .body(ResultBox.fail(resolveCode(e.getCode(), DEFAULT_SYSTEM_CODE), e.getMessage()));
     }
 
     @ExceptionHandler(RetryableException.class)
